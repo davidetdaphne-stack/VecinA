@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#3157d5">
-<title>ComuniIA — Gestión inteligente de comunidades</title>
+<title>VecinIA — Gestión inteligente de comunidades</title>
 
 <style>
 *{box-sizing:border-box}
@@ -173,6 +173,24 @@ h1{
   margin-bottom:9px;
 }
 
+/* TARJETAS INTERACTIVAS */
+
+.clickableCard{
+  cursor:pointer;
+  transition:.18s;
+}
+
+.clickableCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 35px rgba(31,43,74,.13);
+}
+
+.clickHint{
+  font-size:11px;
+  color:var(--primary);
+  margin-top:8px;
+  font-weight:700;
+}
 .grid2{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -382,7 +400,6 @@ th{
   background:#eef3ff;
   color:#2646a3;
 }
-
 .empty{
   text-align:center;
   color:var(--muted);
@@ -400,10 +417,12 @@ th{
   text-align:center;
 }
 
+/* MODAL */
+
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.45);
+  background:rgba(0,0,0,.48);
   display:none;
   align-items:center;
   justify-content:center;
@@ -417,12 +436,13 @@ th{
 
 .modalBox{
   background:#fff;
-  border-radius:18px;
-  max-width:650px;
+  border-radius:20px;
+  max-width:680px;
   width:100%;
   max-height:90vh;
   overflow:auto;
   padding:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
 }
 
 .modalHead{
@@ -432,58 +452,95 @@ th{
   margin-bottom:18px;
 }
 
+.modalHead h2{
+  margin:0;
+}
+
 .close{
   border:0;
   background:#f0f2f6;
-  width:35px;
-  height:35px;
+  width:38px;
+  height:38px;
   border-radius:50%;
-  font-size:20px;
+  font-size:22px;
 }
 
-.chart{
+.personRow{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:15px;
+  margin:10px 0;
   display:flex;
-  align-items:flex-end;
+  justify-content:space-between;
+  align-items:center;
   gap:12px;
-  height:190px;
-  padding:15px 5px 0;
 }
 
-.bar{
-  flex:1;
-  background:#3157d5;
-  border-radius:8px 8px 0 0;
-  min-height:8px;
-  position:relative;
+.personInfo{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
-.bar span{
-  position:absolute;
-  bottom:-22px;
-  width:100%;
-  text-align:center;
-  font-size:11px;
+.houseIcon{
+  width:43px;
+  height:43px;
+  background:#edf1ff;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-size:21px;
+}
+
+.personName{
+  font-weight:800;
+}
+
+.personHome{
   color:var(--muted);
+  font-size:13px;
+  margin-top:3px;
 }
 
-.bar strong{
-  position:absolute;
-  top:-22px;
-  width:100%;
-  text-align:center;
-  font-size:11px;
+.personAmount{
+  text-align:right;
+  font-weight:800;
+}
+
+.modalSummary{
+  background:#f6f8ff;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:15px;
+}
+
+.modalSummary strong{
+  color:var(--primary);
+}
+
+.reminderBtn{
+  margin-top:7px;
+  padding:7px 10px;
+  border:0;
+  border-radius:8px;
+  background:#edf1ff;
+  color:var(--primary);
+  font-size:12px;
+  font-weight:700;
 }
 
 @media(max-width:1000px){
   .cards{
     grid-template-columns:repeat(2,1fr);
   }
+
   .grid3{
     grid-template-columns:1fr 1fr;
   }
 }
 
 @media(max-width:750px){
+
   .topbar{
     padding:0 14px;
   }
@@ -534,6 +591,10 @@ th{
   .demoBadge{
     display:none;
   }
+
+  .personRow{
+    align-items:flex-start;
+  }
 }
 </style>
 </head>
@@ -541,24 +602,35 @@ th{
 <body>
 
 <header class="topbar">
+
   <div class="logo">
+
     <button class="mobileMenu" onclick="toggleMenu()">☰</button>
+
     <div class="logoIcon">🏢</div>
-    ComuniIA
+
+    VecinIA
+
   </div>
-  <div class="demoBadge">DEMO · DATOS DE PRUEBA</div>
+
+  <div class="demoBadge">
+    DEMO · DATOS DE PRUEBA
+  </div>
+
 </header>
+
 
 <div class="layout">
 
 <aside class="sidebar" id="sidebar">
 
-  <div class="menuTitle">Administración</div>
+  <div class="menuTitle">
+    Administración
+  </div>
 
   <button class="navBtn active" onclick="showPage('dashboard',this)">
     🏠 Resumen
   </button>
-
   <button class="navBtn" onclick="showPage('viviendas',this)">
     🏘️ Viviendas
   </button>
@@ -583,7 +655,9 @@ th{
     📈 Informes
   </button>
 
-  <div class="menuTitle">Vecino</div>
+  <div class="menuTitle">
+    Vecino
+  </div>
 
   <button class="navBtn" onclick="showPage('vecino',this)">
     👤 Mi vivienda
@@ -595,293 +669,675 @@ th{
 
 </aside>
 
+
 <main class="main">
 
-<!-- DASHBOARD -->
+
+<!-- ==================== RESUMEN ==================== -->
 
 <section class="page active" id="dashboard">
 
-<h1>Resumen de la comunidad</h1>
-<p class="subtitle">Comunidad Avenida Central · Demo</p>
+<h1>
+  Resumen de la comunidad
+</h1>
+
+<p class="subtitle">
+  Comunidad Avenida Central · Demo
+</p>
+
 
 <div class="cards">
 
-  <div class="card">
-    <div class="statIcon">🏠</div>
-    <div class="statLabel">Viviendas</div>
-    <div class="statValue" id="statHomes">20</div>
-  </div>
 
   <div class="card">
-    <div class="statIcon">💶</div>
-    <div class="statLabel">Gastos del mes</div>
-    <div class="statValue" id="statExpenses">1.245 €</div>
+
+    <div class="statIcon">
+      🏠
+    </div>
+
+    <div class="statLabel">
+      Viviendas
+    </div>
+
+    <div class="statValue" id="statHomes">
+      20
+    </div>
+
   </div>
 
-  <div class="card">
-    <div class="statIcon">✅</div>
-    <div class="statLabel">Pagado</div>
-    <div class="statValue" id="statPaid">1.020 €</div>
-  </div>
 
   <div class="card">
-    <div class="statIcon">⚠️</div>
-    <div class="statLabel">Pendiente</div>
-    <div class="statValue" id="statPending">225 €</div>
+
+    <div class="statIcon">
+      💶
+    </div>
+
+    <div class="statLabel">
+      Gastos del mes
+    </div>
+
+    <div class="statValue" id="statExpenses">
+      1.245 €
+    </div>
+
   </div>
+
+
+  <!-- NUEVA TARJETA PENDIENTE -->
+
+  <div
+    class="card clickableCard"
+    onclick="openPendingModal()"
+  >
+
+    <div class="statIcon">
+      ⚠️
+    </div>
+
+    <div class="statLabel">
+      Pendiente
+    </div>
+
+    <div
+      class="statValue"
+      id="statPending"
+    >
+      186,75 €
+    </div>
+
+    <div class="clickHint">
+      👆 Pulsa para ver quién no ha pagado
+    </div>
+
+  </div>
+
+
+  <!-- NUEVA TARJETA PAGADO -->
+
+  <div
+    class="card clickableCard"
+    onclick="openPaidModal()"
+  >
+
+    <div class="statIcon">
+      ✅
+    </div>
+
+    <div class="statLabel">
+      Pagado
+    </div>
+
+    <div
+      class="statValue"
+      id="statPaid"
+    >
+      1.058,25 €
+    </div>
+
+    <div class="clickHint">
+      👆 Pulsa para ver quién ha pagado
+    </div>
+
+  </div>
+
 
 </div>
 
+
 <div class="grid2">
 
-  <div class="card">
-
-    <div class="sectionTitle">
-      <h2>Situación de pagos</h2>
-      <span class="badge info">Agosto</span>
-    </div>
-
-    <div class="chart">
-      <div class="bar" style="height:75%">
-        <strong>1.020 €</strong>
-        <span>Pagado</span>
-      </div>
-
-      <div class="bar" style="height:25%">
-        <strong>225 €</strong>
-        <span>Pendiente</span>
-      </div>
-    </div>
-
-  </div>
 
   <div class="card">
 
     <div class="sectionTitle">
-      <h2>Alertas</h2>
+
+      <h2>
+        Situación de pagos
+      </h2>
+
+      <span
+        class="badge pending"
+        id="pendingBadge"
+      >
+        3 pendientes
+      </span>
+
     </div>
+
 
     <div class="alert alertRed">
-      <span>⚠️</span>
+
+      <span>
+        ⚠️
+      </span>
+
       <div>
-        <strong>3 pagos pendientes</strong>
+
+        <strong>
+          Hay pagos pendientes
+        </strong>
+
         <br>
-        <small>Hay cuotas que todavía no se han abonado.</small>
+
+        <small>
+          Pulsa la tarjeta roja de arriba para ver exactamente qué viviendas no han pagado.
+        </small>
+
       </div>
+
     </div>
 
-    <div class="alert alertBlue">
-      <span>🤖</span>
-      <div>
-        <strong>Factura detectada</strong>
-        <br>
-        <small>La IA ha encontrado una nueva factura de electricidad.</small>
-      </div>
-    </div>
 
-    <div class="alert alertGreen">
-      <span>✓</span>
-      <div>
-        <strong>Todo correcto</strong>
-        <br>
-        <small>No hay incidencias importantes.</small>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<div class="card" style="margin-top:18px">
-
-  <div class="sectionTitle">
-    <h2>Últimos gastos</h2>
-    <button class="btn btnLight" onclick="showPage('gastos')">Ver todos</button>
-  </div>
-
-  <div class="tableWrap">
-
-    <table>
-      <thead>
-        <tr>
-          <th>Concepto</th>
-          <th>Proveedor</th>
-          <th>Fecha</th>
-          <th>Importe</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-
-      <tbody id="dashboardExpenses"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- VIVIENDAS -->
-
-<section class="page" id="viviendas">
-
-<h1>Viviendas y vecinos</h1>
-<p class="subtitle">Gestiona las viviendas de la comunidad.</p>
-
-<div class="card">
-
-  <div class="sectionTitle">
-    <h2>Viviendas</h2>
-    <button class="btn btnPrimary" onclick="openModal('homeModal')">
-      + Añadir vivienda
+    <button
+      class="btn btnPrimary"
+      onclick="openPendingModal()"
+    >
+      Ver quién no ha pagado
     </button>
-  </div>
-
-  <div class="tableWrap">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Vivienda</th>
-          <th>Vecino</th>
-          <th>Coeficiente</th>
-          <th>Cuota</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-
-      <tbody id="homesTable"></tbody>
-
-    </table>
 
   </div>
 
-</div>
-
-</section>
-
-
-<!-- GASTOS -->
-
-<section class="page" id="gastos">
-
-<h1>Gastos de la comunidad</h1>
-<p class="subtitle">Consulta y reparte los gastos.</p>
-
-<div class="cards">
-
-  <div class="card">
-    <div class="statLabel">Electricidad</div>
-    <div class="bigNumber">438 €</div>
-    <span class="badge info">35,2 %</span>
-  </div>
-
-  <div class="card">
-    <div class="statLabel">Agua</div>
-    <div class="bigNumber">182 €</div>
-    <span class="badge info">14,6 %</span>
-  </div>
-
-  <div class="card">
-    <div class="statLabel">Ascensor</div>
-    <div class="bigNumber">290 €</div>
-    <span class="badge info">23,3 %</span>
-  </div>
-
-  <div class="card">
-    <div class="statLabel">Otros</div>
-    <div class="bigNumber">335 €</div>
-    <span class="badge info">26,9 %</span>
-  </div>
-
-</div>
-
-<div class="card">
-
-  <div class="sectionTitle">
-    <h2>Todos los gastos</h2>
-    <button class="btn btnPrimary" onclick="openModal('expenseModal')">
-      + Añadir gasto
-    </button>
-  </div>
-
-  <div class="tableWrap">
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Concepto</th>
-          <th>Tipo</th>
-          <th>Importe</th>
-          <th>Reparto</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-
-      <tbody id="expensesTable"></tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-<!-- FACTURAS -->
-
-<section class="page" id="facturas">
-
-<h1>Facturas + IA</h1>
-<p class="subtitle">Sube una factura y simula cómo la inteligencia artificial extraería sus datos.</p>
-
-<div class="grid2">
 
   <div class="card">
 
     <div class="sectionTitle">
-      <h2>Subir factura</h2>
-      <span class="badge info">IA</span>
+
+      <h2>
+        Alertas
+      </h2>
+
     </div>
+
+
+    <div class="alert alertRed">
+
+      <span>
+        ⚠️
+      </span>
+
+      <div>
+
+        <strong>
+          3 pagos pendientes
+        </strong>
+
+        <br>
+
+        <small>
+          Hay cuotas que todavía no se han abonado.
+        </small>
+
+      </div>
+
+    </div>
+    <div class="alert alertBlue">
+
+      <span>
+        🤖
+      </span>
+
+      <div>
+
+        <strong>
+          Factura detectada
+        </strong>
+
+        <br>
+
+        <small>
+          La IA ha encontrado una nueva factura de electricidad.
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="alert alertGreen">
+
+      <span>
+        ✓
+      </span>
+
+      <div>
+
+        <strong>
+          Todo correcto
+        </strong>
+
+        <br>
+
+        <small>
+          No hay incidencias importantes.
+        </small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<div
+  class="card"
+  style="margin-top:18px"
+>
+
+  <div class="sectionTitle">
+
+    <h2>
+      Últimos gastos
+    </h2>
+
+    <button
+      class="btn btnLight"
+      onclick="showPage('gastos')"
+    >
+      Ver todos
+    </button>
+
+  </div>
+
+
+  <div class="tableWrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Concepto
+          </th>
+
+          <th>
+            Proveedor
+          </th>
+
+          <th>
+            Fecha
+          </th>
+
+          <th>
+            Importe
+          </th>
+
+          <th>
+            Estado
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="dashboardExpenses">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+</section>
+
+
+
+<!-- ==================== VIVIENDAS ==================== -->
+
+<section
+  class="page"
+  id="viviendas"
+>
+
+<h1>
+  Viviendas y vecinos
+</h1>
+
+<p class="subtitle">
+  Gestiona las viviendas de la comunidad.
+</p>
+
+
+<div class="card">
+
+  <div class="sectionTitle">
+
+    <h2>
+      Viviendas
+    </h2>
+
+    <button
+      class="btn btnPrimary"
+      onclick="openModal('homeModal')"
+    >
+      + Añadir vivienda
+    </button>
+
+  </div>
+
+
+  <div class="tableWrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Vivienda
+          </th>
+
+          <th>
+            Vecino
+          </th>
+
+          <th>
+            Coeficiente
+          </th>
+
+          <th>
+            Cuota
+          </th>
+
+          <th>
+            Estado
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="homesTable">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==================== GASTOS ==================== -->
+
+<section
+  class="page"
+  id="gastos"
+>
+
+<h1>
+  Gastos de la comunidad
+</h1>
+
+<p class="subtitle">
+  Consulta y reparte los gastos.
+</p>
+
+
+<div class="cards">
+
+  <div class="card">
+
+    <div class="statLabel">
+      Electricidad
+    </div>
+
+    <div class="bigNumber">
+      438 €
+    </div>
+
+    <span class="badge info">
+      35,2 %
+    </span>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="statLabel">
+      Agua
+    </div>
+
+    <div class="bigNumber">
+      182 €
+    </div>
+
+    <span class="badge info">
+      14,6 %
+    </span>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="statLabel">
+      Ascensor
+    </div>
+
+    <div class="bigNumber">
+      290 €
+    </div>
+
+    <span class="badge info">
+      23,3 %
+    </span>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="statLabel">
+      Otros
+    </div>
+    <div class="bigNumber">
+      335 €
+    </div>
+
+    <span class="badge info">
+      26,9 %
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="card">
+
+  <div class="sectionTitle">
+
+    <h2>
+      Todos los gastos
+    </h2>
+
+    <button
+      class="btn btnPrimary"
+      onclick="openModal('expenseModal')"
+    >
+      + Añadir gasto
+    </button>
+
+  </div>
+
+
+  <div class="tableWrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Concepto
+          </th>
+
+          <th>
+            Tipo
+          </th>
+
+          <th>
+            Importe
+          </th>
+
+          <th>
+            Reparto
+          </th>
+
+          <th>
+            Acción
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody id="expensesTable">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+</section>
+
+
+
+<!-- ==================== FACTURAS ==================== -->
+
+<section
+  class="page"
+  id="facturas"
+>
+
+<h1>
+  Facturas + IA
+</h1>
+
+<p class="subtitle">
+  Sube una factura y simula cómo la inteligencia artificial extraería sus datos.
+</p>
+
+
+<div class="grid2">
+
+
+  <div class="card">
+
+    <div class="sectionTitle">
+
+      <h2>
+        Subir factura
+      </h2>
+
+      <span class="badge info">
+        IA
+      </span>
+
+    </div>
+
 
     <div class="invoiceDrop">
 
-      <div style="font-size:42px">📄</div>
+      <div style="font-size:42px">
+        📄
+      </div>
 
       <p>
         Selecciona una factura de prueba.
       </p>
 
-      <input type="file" id="invoiceFile" accept=".pdf,.jpg,.jpeg,.png">
+      <input
+        type="file"
+        id="invoiceFile"
+        accept=".pdf,.jpg,.jpeg,.png"
+      >
 
-      <div class="actions" style="justify-content:center">
-        <button class="btn btnPrimary" onclick="analyzeInvoice()">
+
+      <div
+        class="actions"
+        style="justify-content:center"
+      >
+
+        <button
+          class="btn btnPrimary"
+          onclick="analyzeInvoice()"
+        >
           🤖 Analizar con IA
         </button>
+
       </div>
 
     </div>
 
-    <div class="aiResult" id="aiResult">
 
-      <div class="aiTitle">✨ Resultado de la IA</div>
+    <div
+      class="aiResult"
+      id="aiResult"
+    >
 
-      <p><strong>Proveedor:</strong> IberLuz Servicios</p>
-      <p><strong>Tipo:</strong> Electricidad</p>
-      <p><strong>Periodo:</strong> 01/07/2026 - 31/07/2026</p>
-      <p><strong>Importe:</strong> 438,72 €</p>
-      <p><strong>Fecha límite:</strong> 15/08/2026</p>
-
-      <div class="alert alertBlue">
-        🤖 La IA ha identificado los datos. En la versión real, el administrador deberá revisar y confirmar antes de aplicar el gasto.
+      <div class="aiTitle">
+        ✨ Resultado de la IA
       </div>
 
-      <button class="btn btnGreen" onclick="confirmInvoice()">
+      <p>
+        <strong>Proveedor:</strong>
+        IberLuz Servicios
+      </p>
+
+      <p>
+        <strong>Tipo:</strong>
+        Electricidad
+      </p>
+
+      <p>
+        <strong>Periodo:</strong>
+        01/07/2026 - 31/07/2026
+      </p>
+
+      <p>
+        <strong>Importe:</strong>
+        438,72 €
+      </p>
+
+      <p>
+        <strong>Fecha límite:</strong>
+        15/08/2026
+      </p>
+
+
+      <div class="alert alertBlue">
+
+        🤖 La IA ha identificado los datos.
+        En la versión real, el administrador deberá revisar y confirmar antes de aplicar el gasto.
+
+      </div>
+
+
+      <button
+        class="btn btnGreen"
+        onclick="confirmInvoice()"
+      >
         ✓ Confirmar factura
       </button>
 
@@ -893,43 +1349,109 @@ th{
   <div class="card">
 
     <div class="sectionTitle">
-      <h2>Facturas recientes</h2>
+
+      <h2>
+        Facturas recientes
+      </h2>
+
     </div>
+
 
     <div class="tableWrap">
 
       <table>
 
         <thead>
+
           <tr>
-            <th>Proveedor</th>
-            <th>Tipo</th>
-            <th>Importe</th>
-            <th>Estado</th>
+
+            <th>
+              Proveedor
+            </th>
+
+            <th>
+              Tipo
+            </th>
+
+            <th>
+              Importe
+            </th>
+
+            <th>
+              Estado
+            </th>
+
           </tr>
+
         </thead>
+
 
         <tbody>
 
           <tr>
-            <td>IberLuz Servicios</td>
-            <td>Electricidad</td>
-            <td>438,72 €</td>
-            <td><span class="badge paid">Confirmada</span></td>
+
+            <td>
+              IberLuz Servicios
+            </td>
+
+            <td>
+              Electricidad
+            </td>
+
+            <td>
+              438,72 €
+            </td>
+
+            <td>
+              <span class="badge paid">
+                Confirmada
+              </span>
+            </td>
+
+          </tr>
+          <tr>
+
+            <td>
+              Aguas Madrid
+            </td>
+
+            <td>
+              Agua
+            </td>
+
+            <td>
+              182,40 €
+            </td>
+
+            <td>
+              <span class="badge paid">
+                Confirmada
+              </span>
+            </td>
+
           </tr>
 
-          <tr>
-            <td>Aguas Madrid</td>
-            <td>Agua</td>
-            <td>182,40 €</td>
-            <td><span class="badge paid">Confirmada</span></td>
-          </tr>
 
           <tr>
-            <td>Ascensores Plus</td>
-            <td>Ascensor</td>
-            <td>290,00 €</td>
-            <td><span class="badge warning">Revisar</span></td>
+
+            <td>
+              Ascensores Plus
+            </td>
+
+            <td>
+              Ascensor
+            </td>
+
+            <td>
+              290,00 €
+            </td>
+
+            <td>
+              <span class="badge warning">
+                Revisar
+              </span>
+            </td>
+
           </tr>
 
         </tbody>
@@ -945,37 +1467,77 @@ th{
 </section>
 
 
-<!-- CONTADORES -->
 
-<section class="page" id="contadores">
+<!-- ==================== CONTADORES ==================== -->
 
-<h1>Contadores</h1>
-<p class="subtitle">Lecturas individuales para calcular consumos cuando existan contadores separados.</p>
+<section
+  class="page"
+  id="contadores"
+>
+
+<h1>
+  Contadores
+</h1>
+
+<p class="subtitle">
+  Lecturas individuales para calcular consumos cuando existan contadores separados.
+</p>
+
 
 <div class="card">
 
   <div class="sectionTitle">
-    <h2>Lecturas de prueba</h2>
-    <button class="btn btnPrimary" onclick="openModal('meterModal')">
+
+    <h2>
+      Lecturas de prueba
+    </h2>
+
+    <button
+      class="btn btnPrimary"
+      onclick="openModal('meterModal')"
+    >
       + Introducir lectura
     </button>
+
   </div>
+
 
   <div class="tableWrap">
 
     <table>
 
       <thead>
+
         <tr>
-          <th>Vivienda</th>
-          <th>Tipo</th>
-          <th>Lectura anterior</th>
-          <th>Lectura actual</th>
-          <th>Consumo</th>
+
+          <th>
+            Vivienda
+          </th>
+
+          <th>
+            Tipo
+          </th>
+
+          <th>
+            Lectura anterior
+          </th>
+
+          <th>
+            Lectura actual
+          </th>
+
+          <th>
+            Consumo
+          </th>
+
         </tr>
+
       </thead>
 
-      <tbody id="metersTable"></tbody>
+
+      <tbody id="metersTable">
+
+      </tbody>
 
     </table>
 
@@ -983,13 +1545,27 @@ th{
 
 </div>
 
-<div class="alert alertBlue" style="margin-top:18px">
 
-  <span>ℹ️</span>
+<div
+  class="alert alertBlue"
+  style="margin-top:18px"
+>
+
+  <span>
+    ℹ️
+  </span>
 
   <div>
-    <strong>Importante</strong><br>
-    La aplicación no inventa consumos. Para conocer el consumo individual necesita lecturas introducidas por el usuario o datos procedentes de contadores compatibles.
+
+    <strong>
+      Importante
+    </strong>
+
+    <br>
+
+    La aplicación no inventa consumos.
+    Para conocer el consumo individual necesita lecturas introducidas por el usuario o datos procedentes de contadores compatibles.
+
   </div>
 
 </div>
@@ -997,37 +1573,77 @@ th{
 </section>
 
 
-<!-- PAGOS -->
 
-<section class="page" id="pagos">
+<!-- ==================== PAGOS ==================== -->
 
-<h1>Pagos</h1>
-<p class="subtitle">Control de cuotas y pagos pendientes.</p>
+<section
+  class="page"
+  id="pagos"
+>
+
+<h1>
+  Pagos
+</h1>
+
+<p class="subtitle">
+  Control de cuotas y pagos pendientes.
+</p>
+
 
 <div class="card">
 
   <div class="sectionTitle">
-    <h2>Estado de los vecinos</h2>
-    <button class="btn btnLight" onclick="sendReminders()">
+
+    <h2>
+      Estado de los vecinos
+    </h2>
+
+    <button
+      class="btn btnLight"
+      onclick="sendReminders()"
+    >
       🔔 Enviar recordatorios
     </button>
+
   </div>
+
 
   <div class="tableWrap">
 
     <table>
 
       <thead>
+
         <tr>
-          <th>Vivienda</th>
-          <th>Vecino</th>
-          <th>Cuota</th>
-          <th>Estado</th>
-          <th>Acción</th>
+
+          <th>
+            Vivienda
+          </th>
+
+          <th>
+            Vecino
+          </th>
+
+          <th>
+            Cuota
+          </th>
+
+          <th>
+            Estado
+          </th>
+
+          <th>
+            Acción
+          </th>
+
         </tr>
+
       </thead>
 
-      <tbody id="paymentsTable"></tbody>
+
+      <tbody id="paymentsTable">
+
+      </tbody>
 
     </table>
 
@@ -1038,21 +1654,34 @@ th{
 </section>
 
 
-<!-- INFORMES -->
 
-<section class="page" id="informes">
+<!-- ==================== INFORMES ==================== -->
 
-<h1>Informes</h1>
-<p class="subtitle">Resumen automático de la actividad económica.</p>
+<section
+  class="page"
+  id="informes"
+>
 
+<h1>
+  Informes
+</h1>
+
+<p class="subtitle">
+  Resumen automático de la actividad económica.
+</p>
 <div class="grid2">
+
 
   <div class="card">
 
-    <h2>Resumen del mes</h2>
+    <h2>
+      Resumen del mes
+    </h2>
 
     <p>
-      La comunidad ha registrado <strong>1.245 €</strong> de gastos durante agosto.
+      La comunidad ha registrado
+      <strong>1.245 €</strong>
+      de gastos durante agosto.
     </p>
 
     <p>
@@ -1061,7 +1690,9 @@ th{
     </p>
 
     <p>
-      Actualmente hay <strong>225 €</strong> pendientes de pago.
+      Actualmente hay
+      <strong>186,75 €</strong>
+      pendientes de pago.
     </p>
 
     <div class="alert alertGreen">
@@ -1070,9 +1701,12 @@ th{
 
   </div>
 
+
   <div class="card">
 
-    <h2>Consejo de la IA</h2>
+    <h2>
+      Consejo de la IA
+    </h2>
 
     <div class="aiBox">
 
@@ -1085,7 +1719,10 @@ th{
         Conviene revisar el consumo de las zonas comunes y comprobar que no haya ningún equipo funcionando fuera de horario.
       </p>
 
-      <button class="btn btnPrimary" onclick="showMessage('En una versión real, la IA podría analizar meses anteriores y generar recomendaciones automáticamente.')">
+      <button
+        class="btn btnPrimary"
+        onclick="showMessage('En una versión real, la IA podría analizar meses anteriores y generar recomendaciones automáticamente.')"
+      >
         Ver análisis completo
       </button>
 
@@ -1098,71 +1735,128 @@ th{
 </section>
 
 
-<!-- VECINO -->
 
-<section class="page" id="vecino">
+<!-- ==================== VECINO ==================== -->
 
-<h1>Mi vivienda</h1>
-<p class="subtitle">Vista de ejemplo para un vecino.</p>
+<section
+  class="page"
+  id="vecino"
+>
+
+<h1>
+  Mi vivienda
+</h1>
+
+<p class="subtitle">
+  Vista de ejemplo para un vecino.
+</p>
+
 
 <div class="cards">
 
+
   <div class="card">
 
-    <div class="statIcon">🏠</div>
+    <div class="statIcon">
+      🏠
+    </div>
 
-    <div class="statLabel">Mi vivienda</div>
+    <div class="statLabel">
+      Mi vivienda
+    </div>
 
-    <div class="statValue">2ºA</div>
+    <div class="statValue">
+      2ºA
+    </div>
 
   </div>
 
+
   <div class="card">
 
-    <div class="statIcon">💶</div>
+    <div class="statIcon">
+      💶
+    </div>
 
-    <div class="statLabel">Cuota de agosto</div>
+    <div class="statLabel">
+      Cuota de agosto
+    </div>
 
-    <div class="statValue">62,25 €</div>
+    <div class="statValue">
+      62,25 €
+    </div>
 
   </div>
 
+
   <div class="card">
 
-    <div class="statIcon">📊</div>
+    <div class="statIcon">
+      📊
+    </div>
 
-    <div class="statLabel">Mi consumo</div>
+    <div class="statLabel">
+      Mi consumo
+    </div>
 
-    <div class="statValue">70 kWh</div>
+    <div class="statValue">
+      70 kWh
+    </div>
 
   </div>
 
+
   <div class="card">
 
-    <div class="statIcon">✅</div>
+    <div class="statIcon">
+      ✅
+    </div>
 
-    <div class="statLabel">Estado</div>
+    <div class="statLabel">
+      Estado
+    </div>
 
-    <div class="statValue" style="font-size:20px">Al día</div>
+    <div
+      class="statValue"
+      style="font-size:20px"
+    >
+      Al día
+    </div>
 
   </div>
 
 </div>
 
+
 <div class="card">
 
   <div class="sectionTitle">
-    <h2>Desglose de mi cuota</h2>
+
+    <h2>
+      Desglose de mi cuota
+    </h2>
+
   </div>
+
 
   <table>
 
     <thead>
+
       <tr>
-        <th>Concepto</th>
-        <th>Importe</th>
+
+        <th>
+          Concepto
+        </th>
+
+        <th>
+          Importe
+        </th>
+
       </tr>
+
     </thead>
+
 
     <tbody>
 
@@ -1192,21 +1886,33 @@ th{
       </tr>
 
       <tr>
-        <td><strong>Total</strong></td>
-        <td><strong>62,25 €</strong></td>
+        <td>
+          <strong>Total</strong>
+        </td>
+
+        <td>
+          <strong>62,25 €</strong>
+        </td>
       </tr>
 
     </tbody>
 
   </table>
 
+
   <div class="actions">
 
-    <button class="btn btnGreen" onclick="showMessage('Demo: en la versión real aquí se conectaría un sistema de pago.')">
+    <button
+      class="btn btnGreen"
+      onclick="showMessage('Demo: en la versión real aquí se conectaría un sistema de pago.')"
+    >
       💳 Pagar cuota
     </button>
 
-    <button class="btn btnLight" onclick="showMessage('Demo: aquí se podría descargar el recibo.')">
+    <button
+      class="btn btnLight"
+      onclick="showMessage('Demo: aquí se podría descargar el recibo.')"
+    >
       🧾 Ver recibo
     </button>
 
@@ -1215,36 +1921,78 @@ th{
 </div>
 
 </section>
+<!-- ==================== AVISOS ==================== -->
 
+<section
+  class="page"
+  id="avisos"
+>
 
-<!-- AVISOS -->
+<h1>
+  Avisos
+</h1>
 
-<section class="page" id="avisos">
+<p class="subtitle">
+  Notificaciones de la comunidad.
+</p>
 
-<h1>Avisos</h1>
-<p class="subtitle">Notificaciones de la comunidad.</p>
 
 <div class="card">
 
   <div class="alert alertRed">
-    🔔 <div>
-      <strong>Pago pendiente</strong><br>
+
+    🔔
+
+    <div>
+
+      <strong>
+        Pago pendiente
+      </strong>
+
+      <br>
+
       La vivienda 4ºB todavía no ha realizado el pago de agosto.
+
     </div>
+
   </div>
+
 
   <div class="alert alertBlue">
-    📄 <div>
-      <strong>Nueva factura</strong><br>
+
+    📄
+
+    <div>
+
+      <strong>
+        Nueva factura
+      </strong>
+
+      <br>
+
       Se ha añadido una factura de electricidad de 438,72 €.
+
     </div>
+
   </div>
 
+
   <div class="alert alertGreen">
-    ✅ <div>
-      <strong>Pago recibido</strong><br>
+
+    ✅
+
+    <div>
+
+      <strong>
+        Pago recibido
+      </strong>
+
+      <br>
+
       La vivienda 2ºA ha realizado su pago.
+
     </div>
+
   </div>
 
 </div>
@@ -1253,281 +2001,693 @@ th{
 
 
 <div class="footerNote">
-  ComuniIA Demo · Esta versión utiliza datos ficticios y no procesa pagos reales.
+
+  VecinIA Demo · Esta versión utiliza datos ficticios y no procesa pagos reales.
+
 </div>
 
 </main>
+
 </div>
 
 
-<!-- MODAL VIVIENDA -->
 
-<div class="modal" id="homeModal">
+<!-- ===================================================== -->
+<!-- MODAL: LISTA DE PAGOS -->
+<!-- ===================================================== -->
+
+<div
+  class="modal"
+  id="paymentsModal"
+>
 
 <div class="modalBox">
 
   <div class="modalHead">
-    <h2>Añadir vivienda</h2>
-    <button class="close" onclick="closeModal('homeModal')">×</button>
+
+    <h2 id="paymentsModalTitle">
+      Pagos pendientes
+    </h2>
+
+    <button
+      class="close"
+      onclick="closePaymentsModal()"
+    >
+      ×
+    </button>
+
   </div>
+
+
+  <div
+    class="modalSummary"
+    id="paymentsModalSummary"
+  >
+  </div>
+
+
+  <div id="paymentsModalList">
+  </div>
+
+
+</div>
+
+</div>
+
+
+
+<!-- MODAL VIVIENDA -->
+
+<div
+  class="modal"
+  id="homeModal"
+>
+
+<div class="modalBox">
+
+  <div class="modalHead">
+
+    <h2>
+      Añadir vivienda
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('homeModal')"
+    >
+      ×
+    </button>
+
+  </div>
+
 
   <div class="formGrid">
 
     <div class="field">
-      <label>Vivienda</label>
-      <input id="homeName" placeholder="Ej. 3ºB">
+
+      <label>
+        Vivienda
+      </label>
+
+      <input
+        id="homeName"
+        placeholder="Ej. 3ºB"
+      >
+
     </div>
 
-    <div class="field">
-      <label>Vecino</label>
-      <input id="homeOwner" placeholder="Nombre">
-    </div>
 
     <div class="field">
-      <label>Coeficiente (%)</label>
-      <input id="homeCoef" type="number" placeholder="5">
+
+      <label>
+        Vecino
+      </label>
+
+      <input
+        id="homeOwner"
+        placeholder="Nombre"
+      >
+
     </div>
 
+
     <div class="field">
-      <label>Cuota mensual (€)</label>
-      <input id="homeFee" type="number" placeholder="62.25">
+
+      <label>
+        Coeficiente (%)
+      </label>
+
+      <input
+        id="homeCoef"
+        type="number"
+        placeholder="5"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Cuota mensual (€)
+      </label>
+
+      <input
+        id="homeFee"
+        type="number"
+        placeholder="62.25"
+      >
+
     </div>
 
   </div>
 
+
   <div class="actions">
 
-    <button class="btn btnPrimary" onclick="addHome()">
+    <button
+      class="btn btnPrimary"
+      onclick="addHome()"
+    >
       Guardar vivienda
     </button>
 
-    <button class="btn btnLight" onclick="closeModal('homeModal')">
+    <button
+      class="btn btnLight"
+      onclick="closeModal('homeModal')"
+    >
       Cancelar
     </button>
 
   </div>
 
 </div>
+
 </div>
-
-
 <!-- MODAL GASTO -->
 
-<div class="modal" id="expenseModal">
+<div
+  class="modal"
+  id="expenseModal"
+>
 
 <div class="modalBox">
 
   <div class="modalHead">
-    <h2>Añadir gasto</h2>
-    <button class="close" onclick="closeModal('expenseModal')">×</button>
+
+    <h2>
+      Añadir gasto
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('expenseModal')"
+    >
+      ×
+    </button>
+
   </div>
+
 
   <div class="formGrid">
 
     <div class="field">
-      <label>Concepto</label>
-      <input id="expenseName" placeholder="Ej. Electricidad">
+
+      <label>
+        Concepto
+      </label>
+
+      <input
+        id="expenseName"
+        placeholder="Ej. Electricidad"
+      >
+
     </div>
 
+
     <div class="field">
-      <label>Tipo</label>
+
+      <label>
+        Tipo
+      </label>
 
       <select id="expenseType">
-        <option>Electricidad</option>
-        <option>Agua</option>
-        <option>Gas</option>
-        <option>Ascensor</option>
-        <option>Limpieza</option>
-        <option>Reparación</option>
-        <option>Otros</option>
+
+        <option>
+          Electricidad
+        </option>
+
+        <option>
+          Agua
+        </option>
+
+        <option>
+          Gas
+        </option>
+
+        <option>
+          Ascensor
+        </option>
+
+        <option>
+          Limpieza
+        </option>
+
+        <option>
+          Reparación
+        </option>
+
+        <option>
+          Otros
+        </option>
+
       </select>
 
     </div>
 
-    <div class="field">
-      <label>Importe (€)</label>
-      <input id="expenseAmount" type="number" step="0.01">
-    </div>
 
     <div class="field">
-      <label>Proveedor</label>
-      <input id="expenseProvider" placeholder="Empresa">
+
+      <label>
+        Importe (€)
+      </label>
+
+      <input
+        id="expenseAmount"
+        type="number"
+        step="0.01"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Proveedor
+      </label>
+
+      <input
+        id="expenseProvider"
+        placeholder="Empresa"
+      >
+
     </div>
 
   </div>
 
+
   <div class="actions">
 
-    <button class="btn btnPrimary" onclick="addExpense()">
+    <button
+      class="btn btnPrimary"
+      onclick="addExpense()"
+    >
       Guardar gasto
     </button>
 
   </div>
 
 </div>
+
 </div>
+
 
 
 <!-- MODAL CONTADOR -->
 
-<div class="modal" id="meterModal">
+<div
+  class="modal"
+  id="meterModal"
+>
 
 <div class="modalBox">
 
   <div class="modalHead">
-    <h2>Introducir lectura</h2>
-    <button class="close" onclick="closeModal('meterModal')">×</button>
+
+    <h2>
+      Introducir lectura
+    </h2>
+
+    <button
+      class="close"
+      onclick="closeModal('meterModal')"
+    >
+      ×
+    </button>
+
   </div>
+
 
   <div class="formGrid">
 
     <div class="field">
-      <label>Vivienda</label>
+
+      <label>
+        Vivienda
+      </label>
 
       <select id="meterHome">
+
         <option>1ºA</option>
         <option>1ºB</option>
         <option>2ºA</option>
         <option>2ºB</option>
         <option>3ºA</option>
+
       </select>
 
     </div>
 
+
     <div class="field">
-      <label>Tipo</label>
+
+      <label>
+        Tipo
+      </label>
 
       <select id="meterType">
-        <option>Electricidad</option>
-        <option>Agua</option>
-        <option>Gas</option>
+
+        <option>
+          Electricidad
+        </option>
+
+        <option>
+          Agua
+        </option>
+
+        <option>
+          Gas
+        </option>
+
       </select>
 
     </div>
 
-    <div class="field">
-      <label>Lectura anterior</label>
-      <input id="meterPrevious" type="number">
-    </div>
 
     <div class="field">
-      <label>Lectura actual</label>
-      <input id="meterCurrent" type="number">
+
+      <label>
+        Lectura anterior
+      </label>
+
+      <input
+        id="meterPrevious"
+        type="number"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Lectura actual
+      </label>
+
+      <input
+        id="meterCurrent"
+        type="number"
+      >
+
     </div>
 
   </div>
 
+
   <div class="actions">
 
-    <button class="btn btnPrimary" onclick="addMeter()">
+    <button
+      class="btn btnPrimary"
+      onclick="addMeter()"
+    >
       Guardar lectura
     </button>
 
   </div>
 
 </div>
+
 </div>
+
 
 
 <script>
 
-const STORAGE_KEY="comuniia_demo_v1";
+const STORAGE_KEY="vecinia_demo_v2";
+
 
 let data={
+
   homes:[
-    {home:"1ºA",owner:"María López",coef:5,fee:62.25,status:"paid"},
-    {home:"1ºB",owner:"Carlos Martín",coef:5,fee:62.25,status:"paid"},
-    {home:"2ºA",owner:"Ana García",coef:5,fee:62.25,status:"paid"},
-    {home:"2ºB",owner:"Luis Pérez",coef:5,fee:62.25,status:"pending"},
-    {home:"3ºA",owner:"Sofía Ruiz",coef:5,fee:62.25,status:"paid"},
-    {home:"3ºB",owner:"Javier Díaz",coef:5,fee:62.25,status:"pending"},
-    {home:"4ºA",owner:"Laura Gómez",coef:5,fee:62.25,status:"paid"},
-    {home:"4ºB",owner:"Pedro Sánchez",coef:5,fee:62.25,status:"paid"}
+
+    {
+      home:"1ºA",
+      owner:"María López",
+      coef:5,
+      fee:62.25,
+      status:"paid"
+    },
+
+    {
+      home:"1ºB",
+      owner:"Carlos Martín",
+      coef:5,
+      fee:62.25,
+      status:"paid"
+    },
+
+    {
+      home:"2ºA",
+      owner:"Ana García",
+      coef:5,
+      fee:62.25,
+      status:"paid"
+    },
+
+    {
+      home:"2ºB",
+      owner:"Luis Pérez",
+      coef:5,
+      fee:62.25,
+      status:"pending"
+    },
+    {
+      home:"3ºA",
+      owner:"Sofía Ruiz",
+      coef:5,
+      fee:62.25,
+      status:"paid"
+    },
+
+    {
+      home:"3ºB",
+      owner:"Javier Díaz",
+      coef:5,
+      fee:62.25,
+      status:"pending"
+    },
+
+    {
+      home:"4ºA",
+      owner:"Laura Gómez",
+      coef:5,
+      fee:62.25,
+      status:"paid"
+    },
+
+    {
+      home:"4ºB",
+      owner:"Pedro Sánchez",
+      coef:5,
+      fee:62.25,
+      status:"pending"
+    }
+
   ],
+
 
   expenses:[
-    {name:"Factura de electricidad",type:"Electricidad",provider:"IberLuz Servicios",amount:438.72},
-    {name:"Factura de agua",type:"Agua",provider:"Aguas Madrid",amount:182.40},
-    {name:"Mantenimiento del ascensor",type:"Ascensor",provider:"Ascensores Plus",amount:290},
-    {name:"Limpieza de zonas comunes",type:"Limpieza",provider:"Limpiezas Central",amount:210},
-    {name:"Reparación de puerta",type:"Reparación",provider:"Reparaciones 24H",amount:124}
+
+    {
+      name:"Factura de electricidad",
+      type:"Electricidad",
+      provider:"IberLuz Servicios",
+      amount:438.72
+    },
+
+    {
+      name:"Factura de agua",
+      type:"Agua",
+      provider:"Aguas Madrid",
+      amount:182.40
+    },
+
+    {
+      name:"Mantenimiento del ascensor",
+      type:"Ascensor",
+      provider:"Ascensores Plus",
+      amount:290
+    },
+
+    {
+      name:"Limpieza de zonas comunes",
+      type:"Limpieza",
+      provider:"Limpiezas Central",
+      amount:210
+    },
+
+    {
+      name:"Reparación de puerta",
+      type:"Reparación",
+      provider:"Reparaciones 24H",
+      amount:124
+    }
+
   ],
 
+
   meters:[
-    {home:"1ºA",type:"Electricidad",previous:1200,current:1265},
-    {home:"1ºB",type:"Electricidad",previous:1400,current:1462},
-    {home:"2ºA",type:"Electricidad",previous:1240,current:1310},
-    {home:"2ºB",type:"Electricidad",previous:1100,current:1175},
-    {home:"3ºA",type:"Electricidad",previous:1600,current:1651}
+
+    {
+      home:"1ºA",
+      type:"Electricidad",
+      previous:1200,
+      current:1265
+    },
+
+    {
+      home:"1ºB",
+      type:"Electricidad",
+      previous:1400,
+      current:1462
+    },
+
+    {
+      home:"2ºA",
+      type:"Electricidad",
+      previous:1240,
+      current:1310
+    },
+
+    {
+      home:"2ºB",
+      type:"Electricidad",
+      previous:1100,
+      current:1175
+    },
+
+    {
+      home:"3ºA",
+      type:"Electricidad",
+      previous:1600,
+      current:1651
+    }
+
   ]
+
 };
+
+
 
 function loadData(){
 
-  const saved=localStorage.getItem(STORAGE_KEY);
+  const saved=
+    localStorage.getItem(STORAGE_KEY);
 
   if(saved){
 
     try{
+
       data=JSON.parse(saved);
+
     }catch(e){}
 
   }
 
 }
 
+
+
 function saveData(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
+
 }
+
+
 
 function money(value){
 
-  return Number(value).toLocaleString("es-ES",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  })+" €";
+  return Number(value).toLocaleString(
+    "es-ES",
+    {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }
+  )+" €";
 
 }
 
+
+
 function showPage(id,button){
 
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
+  document
+    .querySelectorAll(".page")
+    .forEach(
+      p=>p.classList.remove("active")
+    );
 
-  const page=document.getElementById(id);
 
-  if(page) page.classList.add("active");
+  const page=
+    document.getElementById(id);
 
-  document.querySelectorAll(".navBtn").forEach(b=>{
-    b.classList.remove("active");
-  });
 
-  if(button) button.classList.add("active");
+  if(page){
 
-  document.getElementById("sidebar").classList.remove("open");
+    page.classList.add("active");
+
+  }
+
+
+  document
+    .querySelectorAll(".navBtn")
+    .forEach(
+      b=>b.classList.remove("active")
+    );
+
+
+  if(button){
+
+    button.classList.add("active");
+
+  }
+
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
 
   renderAll();
 
 }
 
+
+
 function toggleMenu(){
 
-  document.getElementById("sidebar").classList.toggle("open");
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
 
 }
+
+
 
 function openModal(id){
 
-  document.getElementById(id).classList.add("show");
+  document
+    .getElementById(id)
+    .classList.add("show");
 
 }
+
+
 
 function closeModal(id){
 
-  document.getElementById(id).classList.remove("show");
+  document
+    .getElementById(id)
+    .classList.remove("show");
 
 }
+
+
 
 function showMessage(text){
 
@@ -1535,311 +2695,889 @@ function showMessage(text){
 
 }
 
-function renderAll(){
 
-  renderStats();
-  renderHomes();
-  renderExpenses();
-  renderPayments();
-  renderMeters();
-  renderDashboardExpenses();
 
-}
+/* =====================================================
+   NUEVO SISTEMA DE PAGOS
+   ===================================================== */
 
-function renderStats(){
 
-  const totalHomes=data.homes.length;
+function openPendingModal(){
 
-  const totalExpenses=data.expenses.reduce((sum,e)=>sum+Number(e.amount),0);
+  const pending=
+    data.homes.filter(
+      h=>h.status==="pending"
+    );
 
-  const totalFees=data.homes.reduce((sum,h)=>sum+Number(h.fee),0);
 
-  const paid=data.homes
-    .filter(h=>h.status==="paid")
-    .reduce((sum,h)=>sum+Number(h.fee),0);
+  document
+    .getElementById("paymentsModalTitle")
+    .textContent=
+      "⚠️ Personas que no han pagado";
+  const total=
+    pending.reduce(
+      (sum,h)=>sum+Number(h.fee),
+      0
+    );
 
-  const pending=totalFees-paid;
 
-  document.getElementById("statHomes").textContent=totalHomes;
+  document
+    .getElementById("paymentsModalSummary")
+    .innerHTML=`
 
-  document.getElementById("statExpenses").textContent=money(totalExpenses);
+      <strong>
+        ${pending.length}
+        ${pending.length===1 ? "vivienda tiene":"viviendas tienen"}
+        el pago pendiente.
+      </strong>
 
-  document.getElementById("statPaid").textContent=money(paid);
+      <br>
 
-  document.getElementById("statPending").textContent=money(pending);
-
-}
-
-function renderHomes(){
-
-  const table=document.getElementById("homesTable");
-
-  table.innerHTML="";
-
-  data.homes.forEach((h,index)=>{
-
-    table.innerHTML+=`
-
-      <tr>
-
-        <td><strong>${escapeHTML(h.home)}</strong></td>
-
-        <td>${escapeHTML(h.owner)}</td>
-
-        <td>${h.coef}%</td>
-
-        <td>${money(h.fee)}</td>
-
-        <td>
-          ${
-            h.status==="paid"
-            ? '<span class="badge paid">Pagado</span>'
-            : '<span class="badge pending">Pendiente</span>'
-          }
-        </td>
-
-      </tr>
+      Total pendiente:
+      <strong>${money(total)}</strong>
 
     `;
 
-  });
+
+  renderPaymentList(
+    pending,
+    "pending"
+  );
+
+
+  document
+    .getElementById("paymentsModal")
+    .classList.add("show");
 
 }
 
-function renderExpenses(){
 
-  const table=document.getElementById("expensesTable");
 
-  table.innerHTML="";
+function openPaidModal(){
 
-  data.expenses.forEach((e,index)=>{
+  const paid=
+    data.homes.filter(
+      h=>h.status==="paid"
+    );
 
-    table.innerHTML+=`
 
-      <tr>
+  document
+    .getElementById("paymentsModalTitle")
+    .textContent=
+      "✅ Personas que han pagado";
 
-        <td>${escapeHTML(e.name)}</td>
 
-        <td>${escapeHTML(e.type)}</td>
+  const total=
+    paid.reduce(
+      (sum,h)=>sum+Number(h.fee),
+      0
+    );
 
-        <td>${money(e.amount)}</td>
 
-        <td>
-          <span class="badge info">Por coeficiente</span>
-        </td>
+  document
+    .getElementById("paymentsModalSummary")
+    .innerHTML=`
 
-        <td>
-          <button class="btn btnDanger" onclick="deleteExpense(${index})">
-            Eliminar
-          </button>
-        </td>
+      <strong>
+        ${paid.length}
+        ${paid.length===1 ? "vivienda ha":"viviendas han"}
+        pagado.
+      </strong>
 
-      </tr>
+      <br>
+
+      Total pagado:
+      <strong>${money(total)}</strong>
 
     `;
 
-  });
+
+  renderPaymentList(
+    paid,
+    "paid"
+  );
+
+
+  document
+    .getElementById("paymentsModal")
+    .classList.add("show");
 
 }
 
-function renderDashboardExpenses(){
 
-  const table=document.getElementById("dashboardExpenses");
 
-  table.innerHTML="";
+function renderPaymentList(
+  people,
+  status
+){
 
-  data.expenses.slice(0,5).forEach(e=>{
+  const container=
+    document.getElementById(
+      "paymentsModalList"
+    );
 
-    table.innerHTML+=`
 
-      <tr>
+  if(!people.length){
 
-        <td>${escapeHTML(e.name)}</td>
-        <td>${escapeHTML(e.provider)}</td>
-        <td>Agosto 2026</td>
-        <td><strong>${money(e.amount)}</strong></td>
-        <td><span class="badge paid">Confirmado</span></td>
+    container.innerHTML=`
 
-      </tr>
+      <div class="empty">
+
+        ${
+          status==="pending"
+          ? "🎉 No hay pagos pendientes."
+          : "Todavía no hay pagos registrados."
+        }
+
+      </div>
 
     `;
-
-  });
-
-}
-
-function renderPayments(){
-
-  const table=document.getElementById("paymentsTable");
-
-  table.innerHTML="";
-
-  data.homes.forEach((h,index)=>{
-
-    table.innerHTML+=`
-
-      <tr>
-
-        <td>${escapeHTML(h.home)}</td>
-
-        <td>${escapeHTML(h.owner)}</td>
-
-        <td>${money(h.fee)}</td>
-
-        <td>
-
-          ${
-            h.status==="paid"
-            ? '<span class="badge paid">Pagado</span>'
-            : '<span class="badge pending">Pendiente</span>'
-          }
-
-        </td>
-
-        <td>
-
-          ${
-            h.status==="pending"
-
-            ?
-
-            `<button class="btn btnGreen" onclick="markPaid(${index})">
-              Marcar pagado
-            </button>`
-
-            :
-
-            `<button class="btn btnLight" onclick="markPending(${index})">
-              Marcar pendiente
-            </button>`
-
-          }
-
-        </td>
-
-      </tr>
-
-    `;
-
-  });
-
-}
-
-function renderMeters(){
-
-  const table=document.getElementById("metersTable");
-
-  table.innerHTML="";
-
-  data.meters.forEach(m=>{
-
-    const consumption=Number(m.current)-Number(m.previous);
-
-    table.innerHTML+=`
-
-      <tr>
-
-        <td>${escapeHTML(m.home)}</td>
-
-        <td>${escapeHTML(m.type)}</td>
-
-        <td>${m.previous}</td>
-
-        <td>${m.current}</td>
-
-        <td>
-          <strong>${consumption} unidades</strong>
-        </td>
-
-      </tr>
-
-    `;
-
-  });
-
-}
-
-function addHome(){
-
-  const home=document.getElementById("homeName").value.trim();
-
-  const owner=document.getElementById("homeOwner").value.trim();
-
-  const coef=Number(document.getElementById("homeCoef").value);
-
-  const fee=Number(document.getElementById("homeFee").value);
-
-  if(!home || !owner || !coef || !fee){
-
-    alert("Completa todos los campos.");
 
     return;
 
   }
 
+
+  container.innerHTML="";
+
+
+  people.forEach(
+    (person,index)=>{
+
+      const row=
+        document.createElement("div");
+
+
+      row.className=
+        "personRow";
+
+
+      let action="";
+
+
+      if(status==="pending"){
+
+        action=`
+
+          <button
+            class="reminderBtn"
+            onclick="sendIndividualReminder('${escapeHTML(person.home)}','${escapeHTML(person.owner)}')"
+          >
+            🔔 Recordar pago
+          </button>
+
+        `;
+
+      }else{
+
+        action=`
+
+          <span
+            class="badge paid"
+          >
+            ✓ Pagado
+          </span>
+
+        `;
+
+      }
+
+
+      row.innerHTML=`
+
+        <div class="personInfo">
+
+          <div class="houseIcon">
+            🏠
+          </div>
+
+          <div>
+
+            <div class="personName">
+              ${escapeHTML(person.home)}
+            </div>
+
+            <div class="personHome">
+              ${escapeHTML(person.owner)}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="personAmount">
+
+          <div>
+            ${money(person.fee)}
+          </div>
+
+          ${action}
+
+        </div>
+
+      `;
+
+
+      container.appendChild(row);
+
+    }
+  );
+
+}
+
+
+
+function sendIndividualReminder(
+  home,
+  owner
+){
+
+  alert(
+
+    "Demo de recordatorio\\n\\n"+
+    "Vivienda: "+home+"\\n"+
+    "Vecino: "+owner+"\\n\\n"+
+    "En la versión real, VecinIA enviaría un aviso al vecino."
+
+  );
+
+}
+
+
+
+function closePaymentsModal(){
+
+  document
+    .getElementById("paymentsModal")
+    .classList.remove("show");
+
+}
+/* =====================================================
+   RESUMEN
+   ===================================================== */
+
+
+function renderStats(){
+
+  const totalHomes=
+    data.homes.length;
+
+
+  const totalExpenses=
+    data.expenses.reduce(
+      (sum,e)=>
+        sum+Number(e.amount),
+      0
+    );
+
+
+  const paid=
+    data.homes
+      .filter(
+        h=>h.status==="paid"
+      )
+      .reduce(
+        (sum,h)=>
+          sum+Number(h.fee),
+        0
+      );
+
+
+  const pending=
+    data.homes
+      .filter(
+        h=>h.status==="pending"
+      )
+      .reduce(
+        (sum,h)=>
+          sum+Number(h.fee),
+        0
+      );
+
+
+  document
+    .getElementById("statHomes")
+    .textContent=
+      totalHomes;
+
+
+  document
+    .getElementById("statExpenses")
+    .textContent=
+      money(totalExpenses);
+
+
+  document
+    .getElementById("statPaid")
+    .textContent=
+      money(paid);
+
+
+  document
+    .getElementById("statPending")
+    .textContent=
+      money(pending);
+
+
+  const pendingCount=
+    data.homes.filter(
+      h=>h.status==="pending"
+    ).length;
+
+
+  const badge=
+    document.getElementById(
+      "pendingBadge"
+    );
+
+
+  badge.textContent=
+    pendingCount+
+    (
+      pendingCount===1
+      ? " pendiente"
+      : " pendientes"
+    );
+
+}
+
+
+
+/* =====================================================
+   VIVIENDAS
+   ===================================================== */
+
+
+function renderHomes(){
+
+  const table=
+    document.getElementById(
+      "homesTable"
+    );
+
+
+  table.innerHTML="";
+
+
+  data.homes.forEach(
+    h=>{
+
+      table.innerHTML+=`
+
+        <tr>
+
+          <td>
+            <strong>
+              ${escapeHTML(h.home)}
+            </strong>
+          </td>
+
+          <td>
+            ${escapeHTML(h.owner)}
+          </td>
+
+          <td>
+            ${h.coef}%
+          </td>
+
+          <td>
+            ${money(h.fee)}
+          </td>
+
+          <td>
+
+            ${
+              h.status==="paid"
+
+              ?
+
+              '<span class="badge paid">Pagado</span>'
+
+              :
+
+              '<span class="badge pending">Pendiente</span>'
+
+            }
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   GASTOS
+   ===================================================== */
+
+
+function renderExpenses(){
+
+  const table=
+    document.getElementById(
+      "expensesTable"
+    );
+
+
+  table.innerHTML="";
+
+
+  data.expenses.forEach(
+    (e,index)=>{
+
+      table.innerHTML+=`
+
+        <tr>
+
+          <td>
+            ${escapeHTML(e.name)}
+          </td>
+
+          <td>
+            ${escapeHTML(e.type)}
+          </td>
+
+          <td>
+            ${money(e.amount)}
+          </td>
+
+          <td>
+            <span class="badge info">
+              Por coeficiente
+            </span>
+          </td>
+
+          <td>
+
+            <button
+              class="btn btnDanger"
+              onclick="deleteExpense(${index})"
+            >
+              Eliminar
+            </button>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+}
+
+
+
+function renderDashboardExpenses(){
+
+  const table=
+    document.getElementById(
+      "dashboardExpenses"
+    );
+
+
+  table.innerHTML="";
+
+
+  data.expenses
+    .slice(0,5)
+    .forEach(
+      e=>{
+
+        table.innerHTML+=`
+
+          <tr>
+
+            <td>
+              ${escapeHTML(e.name)}
+            </td>
+
+            <td>
+              ${escapeHTML(e.provider)}
+            </td>
+
+            <td>
+              Agosto 2026
+            </td>
+
+            <td>
+              <strong>
+                ${money(e.amount)}
+              </strong>
+            </td>
+
+            <td>
+              <span class="badge paid">
+                Confirmado
+              </span>
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+}
+/* =====================================================
+   PAGOS
+   ===================================================== */
+
+
+function renderPayments(){
+
+  const table=
+    document.getElementById(
+      "paymentsTable"
+    );
+
+
+  table.innerHTML="";
+
+
+  data.homes.forEach(
+    (h,index)=>{
+
+      table.innerHTML+=`
+
+        <tr>
+
+          <td>
+            ${escapeHTML(h.home)}
+          </td>
+
+          <td>
+            ${escapeHTML(h.owner)}
+          </td>
+
+          <td>
+            ${money(h.fee)}
+          </td>
+
+          <td>
+
+            ${
+              h.status==="paid"
+
+              ?
+
+              '<span class="badge paid">Pagado</span>'
+
+              :
+
+              '<span class="badge pending">Pendiente</span>'
+
+            }
+
+          </td>
+
+          <td>
+
+            ${
+              h.status==="pending"
+
+              ?
+
+              `<button
+                class="btn btnGreen"
+                onclick="markPaid(${index})"
+              >
+                Marcar pagado
+              </button>`
+
+              :
+
+              `<button
+                class="btn btnLight"
+                onclick="markPending(${index})"
+              >
+                Marcar pendiente
+              </button>`
+
+            }
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   CONTADORES
+   ===================================================== */
+
+
+function renderMeters(){
+
+  const table=
+    document.getElementById(
+      "metersTable"
+    );
+
+
+  table.innerHTML="";
+
+
+  data.meters.forEach(
+    m=>{
+
+      const consumption=
+        Number(m.current)-
+        Number(m.previous);
+
+
+      table.innerHTML+=`
+
+        <tr>
+
+          <td>
+            ${escapeHTML(m.home)}
+          </td>
+
+          <td>
+            ${escapeHTML(m.type)}
+          </td>
+
+          <td>
+            ${m.previous}
+          </td>
+
+          <td>
+            ${m.current}
+          </td>
+
+          <td>
+            <strong>
+              ${consumption} unidades
+            </strong>
+          </td>
+
+        </tr>
+
+      `;
+
+    }
+  );
+
+}
+
+
+
+/* =====================================================
+   AÑADIR VIVIENDA
+   ===================================================== */
+
+
+function addHome(){
+
+  const home=
+    document
+      .getElementById("homeName")
+      .value
+      .trim();
+
+
+  const owner=
+    document
+      .getElementById("homeOwner")
+      .value
+      .trim();
+
+
+  const coef=
+    Number(
+      document
+        .getElementById("homeCoef")
+        .value
+    );
+
+
+  const fee=
+    Number(
+      document
+        .getElementById("homeFee")
+        .value
+    );
+
+
+  if(
+    !home ||
+    !owner ||
+    !coef ||
+    !fee
+  ){
+
+    alert(
+      "Completa todos los campos."
+    );
+
+    return;
+
+  }
+
+
   data.homes.push({
+
     home,
     owner,
     coef,
     fee,
     status:"pending"
+
   });
+
 
   saveData();
 
-  closeModal("homeModal");
 
-  document.getElementById("homeName").value="";
-  document.getElementById("homeOwner").value="";
-  document.getElementById("homeCoef").value="";
-  document.getElementById("homeFee").value="";
+  closeModal(
+    "homeModal"
+  );
+
+
+  document
+    .getElementById("homeName")
+    .value="";
+
+
+  document
+    .getElementById("homeOwner")
+    .value="";
+
+
+  document
+    .getElementById("homeCoef")
+    .value="";
+
+
+  document
+    .getElementById("homeFee")
+    .value="";
+
 
   renderAll();
 
 }
 
+
+
+/* =====================================================
+   AÑADIR GASTO
+   ===================================================== */
+
+
 function addExpense(){
 
-  const name=document.getElementById("expenseName").value.trim();
+  const name=
+    document
+      .getElementById("expenseName")
+      .value
+      .trim();
 
-  const type=document.getElementById("expenseType").value;
 
-  const amount=Number(document.getElementById("expenseAmount").value);
+  const type=
+    document
+      .getElementById("expenseType")
+      .value;
 
-  const provider=document.getElementById("expenseProvider").value.trim();
 
-  if(!name || !amount){
+  const amount=
+    Number(
+      document
+        .getElementById("expenseAmount")
+        .value
+    );
 
-    alert("Introduce al menos el concepto y el importe.");
+
+  const provider=
+    document
+      .getElementById("expenseProvider")
+      .value
+      .trim();
+
+
+  if(
+    !name ||
+    !amount
+  ){
+
+    alert(
+      "Introduce al menos el concepto y el importe."
+    );
 
     return;
 
   }
-
   data.expenses.push({
+
     name,
     type,
     amount,
-    provider:provider || "Proveedor no indicado"
+    provider:
+      provider ||
+      "Proveedor no indicado"
+
   });
+
 
   saveData();
 
-  closeModal("expenseModal");
 
-  document.getElementById("expenseName").value="";
-  document.getElementById("expenseAmount").value="";
-  document.getElementById("expenseProvider").value="";
+  closeModal(
+    "expenseModal"
+  );
+
+
+  document
+    .getElementById("expenseName")
+    .value="";
+
+
+  document
+    .getElementById("expenseAmount")
+    .value="";
+
+
+  document
+    .getElementById("expenseProvider")
+    .value="";
+
 
   renderAll();
 
 }
 
+
+
 function deleteExpense(index){
 
-  if(confirm("¿Eliminar este gasto de la demo?")){
+  if(
+    confirm(
+      "¿Eliminar este gasto de la demo?"
+    )
+  ){
 
-    data.expenses.splice(index,1);
+    data.expenses.splice(
+      index,
+      1
+    );
+
 
     saveData();
 
@@ -1849,19 +3587,32 @@ function deleteExpense(index){
 
 }
 
+
+
+/* =====================================================
+   CAMBIAR ESTADO DE PAGO
+   ===================================================== */
+
+
 function markPaid(index){
 
-  data.homes[index].status="paid";
+  data.homes[index].status=
+    "paid";
+
 
   saveData();
 
   renderAll();
 
 }
+
+
 
 function markPending(index){
 
-  data.homes[index].status="pending";
+  data.homes[index].status=
+    "pending";
+
 
   saveData();
 
@@ -1869,124 +3620,313 @@ function markPending(index){
 
 }
 
+
+
 function sendReminders(){
 
-  const pending=data.homes.filter(h=>h.status==="pending").length;
+  const pending=
+    data.homes.filter(
+      h=>h.status==="pending"
+    );
+
+
+  if(!pending.length){
+
+    alert(
+      "No hay pagos pendientes."
+    );
+
+    return;
+
+  }
+
 
   alert(
-    "Demo: se enviarían recordatorios a "+pending+
+
+    "Demo: se enviarían recordatorios a "+
+    pending.length+
     " viviendas con pagos pendientes."
+
   );
 
 }
 
+
+
+/* =====================================================
+   CONTADORES
+   ===================================================== */
+
+
 function addMeter(){
 
-  const home=document.getElementById("meterHome").value;
+  const home=
+    document.getElementById(
+      "meterHome"
+    ).value;
 
-  const type=document.getElementById("meterType").value;
 
-  const previous=Number(document.getElementById("meterPrevious").value);
+  const type=
+    document.getElementById(
+      "meterType"
+    ).value;
 
-  const current=Number(document.getElementById("meterCurrent").value);
 
-  if(!previous || !current){
+  const previous=
+    Number(
+      document.getElementById(
+        "meterPrevious"
+      ).value
+    );
 
-    alert("Introduce las dos lecturas.");
+
+  const current=
+    Number(
+      document.getElementById(
+        "meterCurrent"
+      ).value
+    );
+
+
+  if(
+    previous===0 ||
+    current===0
+  ){
+
+    alert(
+      "Introduce las dos lecturas."
+    );
 
     return;
 
   }
 
-  if(current<previous){
 
-    alert("La lectura actual no puede ser menor que la anterior.");
+  if(
+    current<previous
+  ){
+
+    alert(
+      "La lectura actual no puede ser menor que la anterior."
+    );
 
     return;
 
   }
+
 
   data.meters.push({
+
     home,
     type,
     previous,
     current
+
   });
+
 
   saveData();
 
-  closeModal("meterModal");
+
+  closeModal(
+    "meterModal"
+  );
+
 
   renderAll();
 
 }
 
+
+
+/* =====================================================
+   IA DE FACTURAS
+   ===================================================== */
+
+
 function analyzeInvoice(){
 
-  const file=document.getElementById("invoiceFile").files[0];
+  const file=
+    document
+      .getElementById(
+        "invoiceFile"
+      )
+      .files[0];
+
 
   if(!file){
 
-    alert("Primero selecciona una factura.");
+    alert(
+      "Primero selecciona una factura."
+    );
 
     return;
 
   }
 
-  const result=document.getElementById("aiResult");
 
-  result.style.display="block";
+  const result=
+    document.getElementById(
+      "aiResult"
+    );
+
+
+  result.style.display=
+    "block";
+
 
   result.scrollIntoView({
+
     behavior:"smooth",
+
     block:"center"
+
   });
 
 }
 
+
+
 function confirmInvoice(){
 
-  const exists=data.expenses.some(
-    e=>e.name==="Factura de electricidad"
-  );
+  const exists=
+    data.expenses.some(
+      e=>
+        e.name===
+        "Factura de electricidad"
+    );
+
 
   if(!exists){
 
     data.expenses.push({
-      name:"Factura de electricidad",
-      type:"Electricidad",
-      provider:"IberLuz Servicios",
-      amount:438.72
+
+      name:
+        "Factura de electricidad",
+
+      type:
+        "Electricidad",
+
+      provider:
+        "IberLuz Servicios",
+
+      amount:
+        438.72
+
     });
+
 
     saveData();
 
   }
 
+
   alert(
+
     "Factura confirmada en la demo. En la versión real, aquí se guardaría el documento y se incorporaría automáticamente al sistema."
+
   );
+
 
   renderAll();
 
 }
 
+
+
+/* =====================================================
+   SEGURIDAD BÁSICA PARA TEXTO
+   ===================================================== */
+
+
 function escapeHTML(value){
 
   return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
+
+
+
+/* =====================================================
+   RENDERIZADO
+   ===================================================== */
+
+
+function renderAll(){
+
+  renderStats();
+
+  renderHomes();
+
+  renderExpenses();
+
+  renderPayments();
+
+  renderMeters();
+
+  renderDashboardExpenses();
+
+}
+
+
+
+/* =====================================================
+   CARGAR DEMO
+   ===================================================== */
+
 
 loadData();
 
 renderAll();
 
+
+/* Cerrar ventana al pulsar fuera */
+
+document
+  .getElementById("paymentsModal")
+  .addEventListener(
+    "click",
+    function(e){
+
+      if(
+        e.target===
+        this
+      ){
+
+        closePaymentsModal();
+
+      }
+
+    }
+  );
+
 </script>
 
 </body>
-  </html>
+</html>
+
