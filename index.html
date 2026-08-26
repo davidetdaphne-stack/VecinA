@@ -5376,7 +5376,56 @@ document.getElementById(
 renderizar();
 
 </script>
+<script>
+/* PARCHE PARA OCULTAR CÓDIGO QUE APARECE EN PANTALLA */
+(function(){
 
+function limpiarCodigoVisible(){
+
+const elementos=document.body.querySelectorAll("*");
+
+elementos.forEach(function(elemento){
+
+if(
+elemento.closest("script") ||
+elemento.closest("style")
+){
+return;
+}
+
+const texto=elemento.textContent||"";
+
+if(
+texto.includes("${datos.") ||
+texto.includes("${escapar(") ||
+texto.includes("${dinero(") ||
+texto.includes("${vecino.") ||
+texto.includes("}.join(") ||
+texto.includes("AQUÍ CONTINÚA EL CÓDIGO DE LAS PÁGINAS")
+){
+
+if(elemento.children.length===0){
+
+elemento.remove();
+
+}
+
+}
+
+});
+
+}
+
+/* Ejecutarlo al cargar */
+window.addEventListener("load",limpiarCodigoVisible);
+
+/* Volver a comprobar por si la página cambia */
+setTimeout(limpiarCodigoVisible,500);
+setTimeout(limpiarCodigoVisible,1500);
+setTimeout(limpiarCodigoVisible,3000);
+
+})();
+</script>
 </body>
 
 </html>
