@@ -1,2224 +1,4975 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#3157d5">
-<title>VecinIA — Gestión inteligente de comunidades</title>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="theme-color"
+  content="#6757e8"
+>
+
+<meta
+  name="description"
+  content="ComuniGest - Gestión inteligente de comunidades"
+>
+
+<title>ComuniGest</title>
+
 
 <style>
-*{box-sizing:border-box}
 
-:root{
-  --primary:#3157d5;
-  --primary-dark:#2443aa;
-  --bg:#f4f6fb;
-  --card:#fff;
-  --text:#1d2433;
-  --muted:#697386;
-  --border:#e4e8f0;
-  --green:#198754;
-  --red:#dc3545;
-  --orange:#f59f00;
-  --shadow:0 8px 30px rgba(31,43,74,.08);
+/* =========================================================
+   COMUNIGEST
+   HOJA DE ESTILOS PRINCIPAL
+========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
+  padding:0;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  background:#f5f6fb;
+  color:#202124;
 }
 
-button,input,select{
-  font:inherit;
+
+:root{
+
+  --primary:#6757e8;
+  --primary-dark:#5142cf;
+  --primary-light:#eeecff;
+
+  --success:#20a45a;
+  --success-light:#e8f8ef;
+
+  --danger:#d9435f;
+  --danger-light:#ffe9ed;
+
+  --warning:#d88a00;
+  --warning-light:#fff4d8;
+
+  --info:#2584d8;
+  --info-light:#e8f4ff;
+
+  --text:#202124;
+  --muted:#70727d;
+  --border:#e4e5ed;
+  --card:#ffffff;
+  --background:#f5f6fb;
+
+  --shadow:
+    0 8px 30px
+    rgba(30,25,70,.06);
+
+  --shadow-big:
+    0 20px 70px
+    rgba(20,15,50,.15);
+
+}
+
+
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
 }
 
 button{
-  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 
-.topbar{
-  height:68px;
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.small{
+  font-size:12px;
+}
+
+.center{
+  text-align:center;
+}
+
+
+header{
+
   position:sticky;
   top:0;
-  z-index:20;
+  left:0;
+  right:0;
+  z-index:1000;
+
+  background:
+    rgba(255,255,255,.96);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+
+  border-bottom:
+    1px solid var(--border);
+
 }
+
+
+.header-content{
+
+  max-width:1250px;
+  margin:0 auto;
+
+  padding:
+    14px 20px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:25px;
+
+}
+
 
 .logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:800;
-  font-size:21px;
-}
 
-.logoIcon{
-  width:38px;
-  height:38px;
-  border-radius:12px;
-  background:var(--primary);
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-}
-
-.demoBadge{
-  background:#fff3cd;
-  color:#856404;
-  border:1px solid #ffe69c;
-  padding:7px 11px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-}
-
-.layout{
-  display:flex;
-  min-height:calc(100vh - 68px);
-}
-
-.sidebar{
-  width:245px;
-  background:#fff;
-  border-right:1px solid var(--border);
-  padding:18px 12px;
-}
-
-.menuTitle{
-  font-size:11px;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  padding:12px 12px 7px;
-}
-
-.navBtn{
-  width:100%;
-  border:0;
-  background:transparent;
-  text-align:left;
-  padding:12px;
-  border-radius:10px;
-  margin:2px 0;
-  color:#424b5d;
-  font-weight:600;
-}
-
-.navBtn:hover,
-.navBtn.active{
-  background:#edf1ff;
-  color:var(--primary);
-}
-
-.main{
-  flex:1;
-  padding:28px;
-  max-width:1500px;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-h1{
-  margin:0 0 7px;
-  font-size:29px;
-}
-
-.subtitle{
-  color:var(--muted);
-  margin:0 0 25px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-bottom:22px;
-}
-
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  padding:20px;
-}
-
-.statLabel{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:10px;
-}
-
-.statValue{
-  font-size:27px;
-  font-weight:800;
-}
-
-.statIcon{
-  font-size:27px;
-  margin-bottom:9px;
-}
-
-/* TARJETAS INTERACTIVAS */
-
-.clickableCard{
-  cursor:pointer;
-  transition:.18s;
-}
-
-.clickableCard:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(31,43,74,.13);
-}
-
-.clickHint{
-  font-size:11px;
-  color:var(--primary);
-  margin-top:8px;
-  font-weight:700;
-}
-.grid2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.sectionTitle{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px;
-}
-
-.sectionTitle h2{
-  margin:0;
-  font-size:19px;
-}
-
-.btn{
-  border:0;
-  border-radius:10px;
-  padding:10px 15px;
-  font-weight:700;
-}
-
-.btnPrimary{
-  background:var(--primary);
-  color:#fff;
-}
-
-.btnPrimary:hover{
-  background:var(--primary-dark);
-}
-
-.btnLight{
-  background:#edf1ff;
-  color:var(--primary);
-}
-
-.btnDanger{
-  background:#ffe8eb;
-  color:var(--red);
-}
-
-.btnGreen{
-  background:#e6f6ed;
-  color:var(--green);
-}
-
-.tableWrap{
-  overflow:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:13px 10px;
-  border-bottom:1px solid var(--border);
-  text-align:left;
-  font-size:14px;
-}
-
-th{
-  color:var(--muted);
-  font-size:12px;
-  text-transform:uppercase;
-}
-
-.badge{
-  display:inline-block;
-  padding:6px 9px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-}
-
-.paid{
-  background:#e7f6ed;
-  color:var(--green);
-}
-
-.pending{
-  background:#fff0f0;
-  color:var(--red);
-}
-
-.warning{
-  background:#fff4db;
-  color:#9a6700;
-}
-
-.info{
-  background:#edf1ff;
-  color:var(--primary);
-}
-
-.formGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.field label{
-  font-size:13px;
-  font-weight:700;
-}
-
-.field input,
-.field select{
-  border:1px solid var(--border);
-  padding:11px 12px;
-  border-radius:10px;
-  outline:none;
-  background:#fff;
-}
-
-.field input:focus,
-.field select:focus{
-  border-color:var(--primary);
-}
-
-.full{
-  grid-column:1/-1;
-}
-
-.actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:16px;
-}
-
-.aiBox{
-  background:linear-gradient(135deg,#eef1ff,#f7f9ff);
-  border:1px solid #dbe2ff;
-  border-radius:16px;
-  padding:20px;
-}
-
-.aiTitle{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  font-weight:800;
-  margin-bottom:9px;
-}
-
-.aiResult{
-  margin-top:15px;
-  display:none;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
-}
-
-.invoiceDrop{
-  border:2px dashed #cbd3e6;
-  border-radius:14px;
-  padding:28px;
-  text-align:center;
-  color:var(--muted);
-  background:#fafbfe;
-}
-
-.bigNumber{
-  font-size:36px;
+  font-size:23px;
   font-weight:900;
-  margin:5px 0;
+  color:var(--primary);
+  white-space:nowrap;
+  letter-spacing:-.5px;
+
 }
 
-.alert{
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:10px;
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
+
+.logo span{
+  color:#222;
 }
 
-.alertRed{
-  background:#fff0f0;
-  color:#8d1c28;
-}
 
-.alertGreen{
-  background:#eaf8f0;
-  color:#166534;
-}
+.logo-icon{
 
-.alertBlue{
-  background:#eef3ff;
-  color:#2646a3;
-}
-.empty{
-  text-align:center;
-  color:var(--muted);
-  padding:30px;
-}
+  display:inline-flex;
 
-.mobileMenu{
-  display:none;
-}
+  width:34px;
+  height:34px;
 
-.footerNote{
-  margin-top:30px;
-  color:var(--muted);
-  font-size:12px;
-  text-align:center;
-}
-
-/* MODAL */
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.48);
-  display:none;
   align-items:center;
   justify-content:center;
-  z-index:100;
-  padding:20px;
+
+  border-radius:10px;
+
+  background:var(--primary-light);
+
+  margin-right:5px;
+
 }
+
+
+.navigation{
+
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  align-items:center;
+
+}
+
+
+.navigation button{
+
+  border:0;
+  background:transparent;
+
+  padding:
+    10px 13px;
+
+  border-radius:10px;
+
+  color:#555;
+  cursor:pointer;
+
+  transition:
+    background .2s,
+    color .2s,
+    transform .2s;
+
+  font-size:14px;
+
+}
+
+
+.navigation button:hover{
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.navigation button.active{
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary);
+
+  font-weight:700;
+
+}
+
+
+main{
+
+  max-width:1250px;
+
+  margin:0 auto;
+
+  padding:
+    30px 20px 60px;
+
+}
+
+
+.page-title{
+  margin-bottom:25px;
+}
+
+
+.page-title h1{
+
+  margin:
+    0 0 7px;
+
+  font-size:32px;
+
+  line-height:1.15;
+
+  letter-spacing:-.6px;
+
+}
+
+
+.page-title p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  line-height:1.5;
+
+}
+
+
+.card{
+
+  background:
+    var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    20px;
+
+  padding:
+    22px;
+
+  box-shadow:
+    var(--shadow);
+
+  margin-bottom:
+    18px;
+
+}
+
+
+.card h2{
+
+  margin:
+    0 0 16px;
+
+  font-size:20px;
+
+}
+
+
+.card h3{
+
+  margin:
+    0 0 8px;
+
+  font-size:17px;
+
+}
+
+
+.card p{
+  line-height:1.55;
+}
+
+
+.card ul{
+
+  line-height:1.8;
+
+  padding-left:22px;
+
+}
+
+
+.grid{
+
+  display:grid;
+  gap:18px;
+
+}
+
+
+.grid-2{
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0,1fr)
+    );
+
+}
+
+
+.grid-3{
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+}
+
+
+.grid-4{
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
+
+}
+
+
+.stat-card{
+
+  background:
+    white;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    18px;
+
+  padding:
+    20px;
+
+  box-shadow:
+    var(--shadow);
+
+}
+
+
+.stat-icon{
+
+  width:48px;
+  height:48px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+    var(--primary-light);
+
+  border-radius:
+    14px;
+
+  font-size:24px;
+
+  margin-bottom:13px;
+
+}
+
+
+.stat-label{
+
+  color:
+    var(--muted);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.4;
+
+}
+
+
+.stat-value{
+
+  font-size:
+    29px;
+
+  font-weight:
+    900;
+
+  margin-top:
+    6px;
+
+  line-height:
+    1.15;
+
+}
+
+
+.stat-extra{
+
+  margin-top:
+    8px;
+
+  font-size:
+    13px;
+
+  color:
+    var(--muted);
+
+}
+
+
+.btn{
+
+  border:0;
+
+  border-radius:
+    11px;
+
+  padding:
+    11px 16px;
+
+  background:
+    var(--primary);
+
+  color:
+    white;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    .2s;
+
+}
+
+
+.btn:hover{
+
+  background:
+    var(--primary-dark);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.btn:active{
+  transform:translateY(0);
+}
+
+
+.btn.secondary{
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary);
+
+}
+
+
+.btn.secondary:hover{
+  background:#e0ddff;
+}
+
+
+.btn.success{
+
+  background:
+    var(--success-light);
+
+  color:
+    #19733d;
+
+}
+
+
+.btn.success:hover{
+  background:#d8f2e3;
+}
+
+
+.btn.danger{
+
+  background:
+    var(--danger-light);
+
+  color:
+    var(--danger);
+
+}
+
+
+.btn.danger:hover{
+  background:#ffdce3;
+}
+
+
+.btn.warning{
+
+  background:
+    var(--warning-light);
+
+  color:
+    #8a6100;
+
+}
+
+
+.btn.info{
+
+  background:
+    var(--info-light);
+
+  color:
+    #1264a0;
+
+}
+
+
+.buttons{
+
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+
+}
+
+
+.badge{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  padding:
+    6px 10px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+
+}
+
+
+.badge.paid{
+
+  background:
+    var(--success-light);
+
+  color:
+    #19733d;
+
+}
+
+
+.badge.unpaid{
+
+  background:
+    var(--danger-light);
+
+  color:
+    var(--danger);
+
+}
+
+
+.badge.pending{
+
+  background:
+    var(--warning-light);
+
+  color:
+    #8a6100;
+
+}
+
+
+.badge.info{
+
+  background:
+    var(--info-light);
+
+  color:
+    #1264a0;
+
+}
+
+
+.progress-wrapper{
+  margin:15px 0;
+}
+
+
+.progress-top{
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  gap:10px;
+
+  margin-bottom:
+    7px;
+
+  font-size:
+    13px;
+
+}
+
+
+.progress{
+
+  width:100%;
+
+  height:
+    13px;
+
+  background:
+    #e8e8ef;
+
+  border-radius:
+    50px;
+
+  overflow:hidden;
+
+}
+
+
+.progress-bar{
+
+  height:100%;
+
+  background:
+    var(--primary);
+
+  border-radius:
+    50px;
+
+  transition:
+    width .5s ease;
+
+}
+
+
+.table-container{
+
+  overflow-x:
+    auto;
+
+  width:100%;
+
+}
+
+
+table{
+
+  width:100%;
+
+  border-collapse:
+    collapse;
+
+  min-width:
+    700px;
+
+}
+
+
+th{
+
+  text-align:left;
+
+  padding:
+    13px 10px;
+
+  color:
+    #777;
+
+  font-size:
+    13px;
+
+  border-bottom:
+    1px solid var(--border);
+
+  white-space:
+    nowrap;
+
+}
+
+
+td{
+
+  padding:
+    14px 10px;
+
+  border-bottom:
+    1px solid #eeeeF3;
+
+  vertical-align:
+    middle;
+
+}
+
+
+tr:last-child td{
+  border-bottom:0;
+}
+
+
+.form-group{
+  margin-bottom:15px;
+}
+
+
+.form-group label{
+
+  display:block;
+
+  margin-bottom:
+    6px;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+}
+
+
+input,
+select,
+textarea{
+
+  width:100%;
+
+  border:
+    1px solid #dcdde6;
+
+  background:
+    white;
+
+  border-radius:
+    11px;
+
+  padding:
+    12px;
+
+  outline:none;
+
+  font-size:
+    14px;
+
+  color:
+    var(--text);
+
+  transition:
+    border .2s,
+    box-shadow .2s;
+
+}
+
+
+input:focus,
+select:focus,
+textarea:focus{
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(103,87,232,.1);
+
+}
+
+
+textarea{
+
+  resize:
+    vertical;
+
+  min-height:
+    100px;
+
+}
+
+
+.alert{
+
+  padding:
+    15px 17px;
+
+  border-radius:
+    14px;
+
+  background:
+    var(--primary-light);
+
+  color:
+    #40389c;
+
+  line-height:
+    1.5;
+
+}
+
+
+.alert.success{
+
+  background:
+    var(--success-light);
+
+  color:
+    #19733d;
+
+}
+
+
+.alert.warning{
+
+  background:
+    var(--warning-light);
+
+  color:
+    #805b00;
+
+}
+
+
+.alert.danger{
+
+  background:
+    var(--danger-light);
+
+  color:
+    #a32d45;
+
+}
+
+
+.alert.info{
+
+  background:
+    var(--info-light);
+
+  color:
+    #1264a0;
+
+}
+
+
+.expense-item{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+    space-between;
+
+  gap:15px;
+
+  padding:
+    15px 0;
+
+  border-bottom:
+    1px solid #eeeef3;
+
+}
+
+
+.expense-item:last-child{
+  border-bottom:0;
+}
+
+
+.expense-left{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:13px;
+
+  min-width:0;
+
+}
+
+
+.expense-icon{
+
+  width:44px;
+  height:44px;
+
+  flex-shrink:0;
+
+  border-radius:
+    13px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+    var(--primary-light);
+
+  font-size:21px;
+
+}
+
+
+.expense-amount{
+
+  font-size:
+    18px;
+
+  font-weight:
+    800;
+
+}
+.neighbor-box{
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    16px;
+
+  padding:
+    17px;
+
+  background:
+    white;
+
+  transition:
+    box-shadow .2s,
+    transform .2s;
+
+}
+
+
+.neighbor-box:hover{
+
+  box-shadow:
+    var(--shadow);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.neighbor-top{
+
+  display:flex;
+
+  justify-content:
+    space-between;
+
+  gap:10px;
+
+  align-items:
+    flex-start;
+
+}
+
+
+.avatar{
+
+  width:45px;
+
+  height:45px;
+
+  flex-shrink:0;
+
+  background:
+    var(--primary-light);
+
+  color:
+    var(--primary);
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:
+    50%;
+
+  font-weight:
+    900;
+
+  font-size:
+    18px;
+
+}
+
+
+.modal{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:2000;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  background:
+    rgba(15,15,25,.55);
+
+  padding:
+    18px;
+
+}
+
 
 .modal.show{
   display:flex;
 }
 
-.modalBox{
-  background:#fff;
-  border-radius:20px;
-  max-width:680px;
-  width:100%;
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  box-shadow:0 20px 60px rgba(0,0,0,.2);
+
+.modal-box{
+
+  width:
+    min(650px,100%);
+
+  max-height:
+    90vh;
+
+  overflow-y:
+    auto;
+
+  background:
+    white;
+
+  border-radius:
+    22px;
+
+  padding:
+    25px;
+
+  box-shadow:
+    var(--shadow-big);
+
 }
 
-.modalHead{
+
+.modal-header{
+
   display:flex;
-  justify-content:space-between;
+
+  justify-content:
+    space-between;
+
   align-items:center;
-  margin-bottom:18px;
+
+  gap:15px;
+
+  margin-bottom:
+    20px;
+
 }
 
-.modalHead h2{
+
+.modal-header h2{
   margin:0;
 }
 
-.close{
+
+.close-btn{
+
+  width:35px;
+  height:35px;
+
   border:0;
-  background:#f0f2f6;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  font-size:22px;
-}
 
-.personRow{
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:15px;
-  margin:10px 0;
+  border-radius:
+    50%;
+
+  background:
+    #eee;
+
+  cursor:pointer;
+
+  font-size:20px;
+
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
-  gap:12px;
+  justify-content:center;
+
 }
 
-.personInfo{
+
+.close-btn:hover{
+  background:#ddd;
+}
+
+
+.chart{
+
   display:flex;
+
+  align-items:flex-end;
+
+  height:
+    230px;
+
+  gap:
+    18px;
+
+  padding:
+    20px 10px 0;
+
+}
+
+
+.bar-column{
+
+  flex:1;
+
+  height:100%;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:flex-end;
+
   align-items:center;
-  gap:12px;
+
+  gap:8px;
+
 }
 
-.houseIcon{
-  width:43px;
-  height:43px;
-  background:#edf1ff;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
+
+.bar{
+
+  width:
+    min(55px,80%);
+
+  background:
+    var(--primary);
+
+  border-radius:
+    8px 8px 0 0;
+
+  min-height:
+    4px;
+
+  transition:
+    height .5s ease;
+
 }
 
-.personName{
-  font-weight:800;
+
+.bar-label{
+
+  font-size:
+    12px;
+
+  color:
+    #777;
+
+  text-align:
+    center;
+
 }
 
-.personHome{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:3px;
+
+.bar-value{
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
 }
 
-.personAmount{
-  text-align:right;
-  font-weight:800;
+
+.ai-box{
+
+  border:
+    1px solid #ddd8ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7f5ff,
+      #ffffff
+    );
+
+  border-radius:
+    18px;
+
+  padding:
+    20px;
+
 }
 
-.modalSummary{
-  background:#f6f8ff;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:15px;
+
+.ai-icon{
+
+  font-size:
+    38px;
+
+  margin-bottom:
+    10px;
+
 }
 
-.modalSummary strong{
-  color:var(--primary);
+
+.ai-result{
+  margin-top:18px;
 }
 
-.reminderBtn{
-  margin-top:7px;
-  padding:7px 10px;
-  border:0;
-  border-radius:8px;
-  background:#edf1ff;
-  color:var(--primary);
-  font-size:12px;
-  font-weight:700;
+
+.ai-result p{
+  margin:8px 0;
 }
 
-@media(max-width:1000px){
-  .cards{
-    grid-template-columns:repeat(2,1fr);
-  }
 
-  .grid3{
-    grid-template-columns:1fr 1fr;
-  }
+.empty{
+
+  text-align:
+    center;
+
+  padding:
+    35px 15px;
+
+  color:
+    #777;
+
 }
 
-@media(max-width:750px){
 
-  .topbar{
-    padding:0 14px;
+footer{
+
+  max-width:
+    1250px;
+
+  margin:
+    0 auto;
+
+  padding:
+    0 20px 40px;
+
+  color:
+    #888;
+
+  font-size:
+    12px;
+
+  text-align:
+    center;
+
+  line-height:
+    1.5;
+
+}
+
+
+.divider{
+
+  border:
+    0;
+
+  border-top:
+    1px solid #eeeeF3;
+
+  margin:
+    18px 0;
+
+}
+
+
+@media(max-width:950px){
+
+  .grid-4{
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+
   }
 
-  .mobileMenu{
-    display:block;
-    border:0;
-    background:#edf1ff;
-    color:var(--primary);
-    width:40px;
-    height:40px;
-    border-radius:10px;
-    font-size:20px;
+
+  .header-content{
+    flex-wrap:wrap;
   }
 
-  .sidebar{
-    position:fixed;
-    left:-260px;
-    top:68px;
-    bottom:0;
-    z-index:50;
-    transition:.2s;
+
+  .navigation{
+    width:100%;
   }
 
-  .sidebar.open{
-    left:0;
+}
+
+
+@media(max-width:650px){
+
+  main{
+
+    padding:
+      22px 13px 50px;
+
   }
 
-  .main{
-    padding:18px 14px;
+
+  .grid-2,
+  .grid-3,
+  .grid-4{
+
+    grid-template-columns:
+      1fr;
+
   }
 
-  .cards,
-  .grid2,
-  .grid3,
-  .formGrid{
-    grid-template-columns:1fr;
+
+  .page-title h1{
+
+    font-size:
+      27px;
+
   }
 
-  h1{
-    font-size:24px;
+
+  .navigation{
+
+    overflow-x:
+      auto;
+
+    flex-wrap:
+      nowrap;
+
+    padding-bottom:
+      4px;
+
   }
 
-  .full{
-    grid-column:auto;
+
+  .navigation button{
+    white-space:nowrap;
   }
 
-  .demoBadge{
+
+  .stat-value{
+    font-size:25px;
+  }
+
+
+  .expense-item{
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+  }
+
+
+  .expense-item > div:last-child{
+
+    width:
+      100%;
+
+    text-align:
+      left !important;
+
+  }
+
+
+  .hide-mobile{
     display:none;
   }
 
-  .personRow{
-    align-items:flex-start;
+
+  .modal-box{
+
+    padding:
+      19px;
+
+    border-radius:
+      18px;
+
   }
+
 }
+
+
 </style>
+
 </head>
+
 
 <body>
 
-<header class="topbar">
 
-  <div class="logo">
+<header>
 
-    <button class="mobileMenu" onclick="toggleMenu()">☰</button>
+  <div class="header-content">
 
-    <div class="logoIcon">🏢</div>
+    <div class="logo">
 
-    VecinIA
+      <span class="logo-icon">🏢</span>
 
-  </div>
+      Comuni<span>Gest</span>
 
-  <div class="demoBadge">
-    DEMO · DATOS DE PRUEBA
+    </div>
+
+
+    <nav
+      class="navigation"
+      id="navigation"
+    ></nav>
+
+
   </div>
 
 </header>
 
 
-<div class="layout">
+<main id="app"></main>
 
-<aside class="sidebar" id="sidebar">
 
-  <div class="menuTitle">
-    Administración
-  </div>
+<footer>
 
-  <button class="navBtn active" onclick="showPage('dashboard',this)">
-    🏠 Resumen
-  </button>
-  <button class="navBtn" onclick="showPage('viviendas',this)">
-    🏘️ Viviendas
-  </button>
+  ComuniGest · Demo de prueba ·
 
-  <button class="navBtn" onclick="showPage('gastos',this)">
-    💶 Gastos
-  </button>
+  Los datos de esta versión se guardan
+  solamente en este navegador.
 
-  <button class="navBtn" onclick="showPage('facturas',this)">
-    📄 Facturas + IA
-  </button>
-
-  <button class="navBtn" onclick="showPage('contadores',this)">
-    📊 Contadores
-  </button>
-
-  <button class="navBtn" onclick="showPage('pagos',this)">
-    ✅ Pagos
-  </button>
-
-  <button class="navBtn" onclick="showPage('informes',this)">
-    📈 Informes
-  </button>
-
-  <div class="menuTitle">
-    Vecino
-  </div>
-
-  <button class="navBtn" onclick="showPage('vecino',this)">
-    👤 Mi vivienda
-  </button>
-
-  <button class="navBtn" onclick="showPage('avisos',this)">
-    🔔 Avisos
-  </button>
-
-</aside>
-
-
-<main class="main">
-
-
-<!-- ==================== RESUMEN ==================== -->
-
-<section class="page active" id="dashboard">
-
-<h1>
-  Resumen de la comunidad
-</h1>
-
-<p class="subtitle">
-  Comunidad Avenida Central · Demo
-</p>
-
-
-<div class="cards">
-
-
-  <div class="card">
-
-    <div class="statIcon">
-      🏠
-    </div>
-
-    <div class="statLabel">
-      Viviendas
-    </div>
-
-    <div class="statValue" id="statHomes">
-      20
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="statIcon">
-      💶
-    </div>
-
-    <div class="statLabel">
-      Gastos del mes
-    </div>
-
-    <div class="statValue" id="statExpenses">
-      1.245 €
-    </div>
-
-  </div>
-
-
-  <!-- NUEVA TARJETA PENDIENTE -->
-
-  <div
-    class="card clickableCard"
-    onclick="openPendingModal()"
-  >
-
-    <div class="statIcon">
-      ⚠️
-    </div>
-
-    <div class="statLabel">
-      Pendiente
-    </div>
-
-    <div
-      class="statValue"
-      id="statPending"
-    >
-      186,75 €
-    </div>
-
-    <div class="clickHint">
-      👆 Pulsa para ver quién no ha pagado
-    </div>
-
-  </div>
-
-
-  <!-- NUEVA TARJETA PAGADO -->
-
-  <div
-    class="card clickableCard"
-    onclick="openPaidModal()"
-  >
-
-    <div class="statIcon">
-      ✅
-    </div>
-
-    <div class="statLabel">
-      Pagado
-    </div>
-
-    <div
-      class="statValue"
-      id="statPaid"
-    >
-      1.058,25 €
-    </div>
-
-    <div class="clickHint">
-      👆 Pulsa para ver quién ha pagado
-    </div>
-
-  </div>
-
-
-</div>
-
-
-<div class="grid2">
-
-
-  <div class="card">
-
-    <div class="sectionTitle">
-
-      <h2>
-        Situación de pagos
-      </h2>
-
-      <span
-        class="badge pending"
-        id="pendingBadge"
-      >
-        3 pendientes
-      </span>
-
-    </div>
-
-
-    <div class="alert alertRed">
-
-      <span>
-        ⚠️
-      </span>
-
-      <div>
-
-        <strong>
-          Hay pagos pendientes
-        </strong>
-
-        <br>
-
-        <small>
-          Pulsa la tarjeta roja de arriba para ver exactamente qué viviendas no han pagado.
-        </small>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="btn btnPrimary"
-      onclick="openPendingModal()"
-    >
-      Ver quién no ha pagado
-    </button>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="sectionTitle">
-
-      <h2>
-        Alertas
-      </h2>
-
-    </div>
-
-
-    <div class="alert alertRed">
-
-      <span>
-        ⚠️
-      </span>
-
-      <div>
-
-        <strong>
-          3 pagos pendientes
-        </strong>
-
-        <br>
-
-        <small>
-          Hay cuotas que todavía no se han abonado.
-        </small>
-
-      </div>
-
-    </div>
-    <div class="alert alertBlue">
-
-      <span>
-        🤖
-      </span>
-
-      <div>
-
-        <strong>
-          Factura detectada
-        </strong>
-
-        <br>
-
-        <small>
-          La IA ha encontrado una nueva factura de electricidad.
-        </small>
-
-      </div>
-
-    </div>
-
-
-    <div class="alert alertGreen">
-
-      <span>
-        ✓
-      </span>
-
-      <div>
-
-        <strong>
-          Todo correcto
-        </strong>
-
-        <br>
-
-        <small>
-          No hay incidencias importantes.
-        </small>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-</div>
+</footer>
 
 
 <div
-  class="card"
-  style="margin-top:18px"
+  class="modal"
+  id="modal"
 >
 
-  <div class="sectionTitle">
-
-    <h2>
-      Últimos gastos
-    </h2>
-
-    <button
-      class="btn btnLight"
-      onclick="showPage('gastos')"
-    >
-      Ver todos
-    </button>
-
-  </div>
-
-
-  <div class="tableWrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Concepto
-          </th>
-
-          <th>
-            Proveedor
-          </th>
-
-          <th>
-            Fecha
-          </th>
-
-          <th>
-            Importe
-          </th>
-
-          <th>
-            Estado
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody id="dashboardExpenses">
-
-      </tbody>
-
-    </table>
-
-  </div>
+  <div
+    class="modal-box"
+    id="modalBox"
+  ></div>
 
 </div>
 
 
-</section>
+<script>
 
+/* =========================================================
+   COMUNIGEST
+   JAVASCRIPT PRINCIPAL
+========================================================= */
 
+const STORAGE_KEY =
+  "comunigest_demo_grande_v2";
 
-<!-- ==================== VIVIENDAS ==================== -->
 
-<section
-  class="page"
-  id="viviendas"
->
+const datosIniciales = {
 
-<h1>
-  Viviendas y vecinos
-</h1>
+  pagina:"inicio",
 
-<p class="subtitle">
-  Gestiona las viviendas de la comunidad.
-</p>
 
+  comunidad:{
 
-<div class="card">
+    nombre:
+      "Comunidad Plaza Mayor 12",
 
-  <div class="sectionTitle">
+    direccion:
+      "Calle Principal 12",
 
-    <h2>
-      Viviendas
-    </h2>
+    mes:
+      "Agosto 2026",
 
-    <button
-      class="btn btnPrimary"
-      onclick="openModal('homeModal')"
-    >
-      + Añadir vivienda
-    </button>
+    vecinosTotales:
+      8
 
-  </div>
+  },
 
 
-  <div class="tableWrap">
+  vecinos:[
 
-    <table>
+    {
 
-      <thead>
+      id:1,
 
-        <tr>
+      nombre:
+        "Vecino A",
 
-          <th>
-            Vivienda
-          </th>
+      vivienda:
+        "1º A",
 
-          <th>
-            Vecino
-          </th>
+      personas:
+        2,
 
-          <th>
-            Coeficiente
-          </th>
+      porcentaje:
+        12.5,
 
-          <th>
-            Cuota
-          </th>
+      pagado:
+        true
 
-          <th>
-            Estado
-          </th>
+    },
 
-        </tr>
 
-      </thead>
+    {
 
+      id:2,
 
-      <tbody id="homesTable">
+      nombre:
+        "Vecino B",
 
-      </tbody>
+      vivienda:
+        "1º B",
 
-    </table>
+      personas:
+        3,
 
-  </div>
+      porcentaje:
+        12.5,
 
-</div>
+      pagado:
+        false
 
-</section>
+    },
 
 
+    {
 
-<!-- ==================== GASTOS ==================== -->
+      id:3,
 
-<section
-  class="page"
-  id="gastos"
->
+      nombre:
+        "Vecino C",
 
-<h1>
-  Gastos de la comunidad
-</h1>
+      vivienda:
+        "2º A",
 
-<p class="subtitle">
-  Consulta y reparte los gastos.
-</p>
+      personas:
+        2,
 
+      porcentaje:
+        12.5,
 
-<div class="cards">
+      pagado:
+        true
 
-  <div class="card">
+    },
 
-    <div class="statLabel">
-      Electricidad
-    </div>
 
-    <div class="bigNumber">
-      438 €
-    </div>
+    {
 
-    <span class="badge info">
-      35,2 %
-    </span>
+      id:4,
 
-  </div>
+      nombre:
+        "Vecino D",
 
+      vivienda:
+        "2º B",
 
-  <div class="card">
+      personas:
+        1,
 
-    <div class="statLabel">
-      Agua
-    </div>
+      porcentaje:
+        12.5,
 
-    <div class="bigNumber">
-      182 €
-    </div>
+      pagado:
+        false
 
-    <span class="badge info">
-      14,6 %
-    </span>
+    },
 
-  </div>
 
+    {
 
-  <div class="card">
+      id:5,
 
-    <div class="statLabel">
-      Ascensor
-    </div>
+      nombre:
+        "Vecino E",
 
-    <div class="bigNumber">
-      290 €
-    </div>
+      vivienda:
+        "3º A",
 
-    <span class="badge info">
-      23,3 %
-    </span>
+      personas:
+        2,
 
-  </div>
+      porcentaje:
+        12.5,
 
+      pagado:
+        true
 
-  <div class="card">
+    },
 
-    <div class="statLabel">
-      Otros
-    </div>
-    <div class="bigNumber">
-      335 €
-    </div>
 
-    <span class="badge info">
-      26,9 %
-    </span>
+    {
 
-  </div>
+      id:6,
 
-</div>
+      nombre:
+        "Vecino F",
 
+      vivienda:
+        "3º B",
 
-<div class="card">
+      personas:
+        3,
 
-  <div class="sectionTitle">
+      porcentaje:
+        12.5,
 
-    <h2>
-      Todos los gastos
-    </h2>
+      pagado:
+        false
 
-    <button
-      class="btn btnPrimary"
-      onclick="openModal('expenseModal')"
-    >
-      + Añadir gasto
-    </button>
+    },
 
-  </div>
 
+    {
 
-  <div class="tableWrap">
+      id:7,
 
-    <table>
+      nombre:
+        "Vecino G",
 
-      <thead>
+      vivienda:
+        "4º A",
 
-        <tr>
+      personas:
+        1,
 
-          <th>
-            Concepto
-          </th>
+      porcentaje:
+        12.5,
 
-          <th>
-            Tipo
-          </th>
+      pagado:
+        true
 
-          <th>
-            Importe
-          </th>
+    },
 
-          <th>
-            Reparto
-          </th>
 
-          <th>
-            Acción
-          </th>
+    {
 
-        </tr>
+      id:8,
 
-      </thead>
+      nombre:
+        "Vecino H",
 
+      vivienda:
+        "4º B",
 
-      <tbody id="expensesTable">
+      personas:
+        2,
 
-      </tbody>
+      porcentaje:
+        12.5,
 
-    </table>
+      pagado:
+        false
 
-  </div>
+    }
 
-</div>
+  ],
 
-</section>
 
+  gastos:[
 
+    {
 
-<!-- ==================== FACTURAS ==================== -->
+      id:1,
 
-<section
-  class="page"
-  id="facturas"
->
+      tipo:
+        "Ascensor",
 
-<h1>
-  Facturas + IA
-</h1>
+      descripcion:
+        "Mantenimiento mensual del ascensor",
 
-<p class="subtitle">
-  Sube una factura y simula cómo la inteligencia artificial extraería sus datos.
-</p>
+      importe:
+        180,
 
+      fecha:
+        "05/08/2026"
 
-<div class="grid2">
+    },
 
 
-  <div class="card">
+    {
 
-    <div class="sectionTitle">
+      id:2,
 
-      <h2>
-        Subir factura
-      </h2>
+      tipo:
+        "Luz",
 
-      <span class="badge info">
-        IA
-      </span>
+      descripcion:
+        "Electricidad de zonas comunes",
 
-    </div>
+      importe:
+        145.50,
 
+      fecha:
+        "08/08/2026"
 
-    <div class="invoiceDrop">
+    },
 
-      <div style="font-size:42px">
-        📄
-      </div>
+
+    {
+
+      id:3,
+
+      tipo:
+        "Gas",
+
+      descripcion:
+        "Gas de la calefacción comunitaria",
+
+      importe:
+        310,
+
+      fecha:
+        "10/08/2026"
+
+    },
+
+
+    {
+
+      id:4,
+
+      tipo:
+        "Limpieza",
+
+      descripcion:
+        "Limpieza del portal y escaleras",
+
+      importe:
+        120,
+
+      fecha:
+        "12/08/2026"
+
+    },
+
+
+    {
+
+      id:5,
+
+      tipo:
+        "Agua",
+
+      descripcion:
+        "Agua de zonas comunes",
+
+      importe:
+        75,
+
+      fecha:
+        "14/08/2026"
+
+    },
+
+
+    {
+
+      id:6,
+
+      tipo:
+        "Seguro",
+
+      descripcion:
+        "Seguro de la comunidad",
+
+      importe:
+        95,
+
+      fecha:
+        "15/08/2026"
+
+    }
+
+  ],
+
+
+  mesAnterior:
+    760,
+
+
+  pagos:[],
+
+
+  siguienteId:
+    100
+
+};
+
+
+let datos;
+
+
+try{
+
+  const guardado =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+
+  if(guardado){
+
+    datos =
+      JSON.parse(
+        guardado
+      );
+
+  }else{
+
+    datos =
+      JSON.parse(
+        JSON.stringify(
+          datosIniciales
+        )
+      );
+
+  }
+
+}catch(error){
+
+  datos =
+    JSON.parse(
+      JSON.stringify(
+        datosIniciales
+      )
+    );
+
+}
+
+
+function guardar(){
+
+  localStorage.setItem(
+
+    STORAGE_KEY,
+
+    JSON.stringify(
+      datos
+    )
+
+  );
+
+}
+
+
+function dinero(numero){
+
+  return Number(
+    numero || 0
+  ).toLocaleString(
+
+    "es-ES",
+
+    {
+
+      style:
+        "currency",
+
+      currency:
+        "EUR"
+
+    }
+
+  );
+
+}
+
+
+function numero(numero){
+
+  return Number(
+    numero || 0
+  ).toLocaleString(
+
+    "es-ES",
+
+    {
+
+      minimumFractionDigits:
+        2,
+
+      maximumFractionDigits:
+        2
+
+    }
+
+  );
+
+}
+
+
+function escapar(texto){
+
+  return String(
+    texto ?? ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
+}
+
+
+function totalGastos(){
+
+  return datos.gastos.reduce(
+
+    (
+      total,
+      gasto
+    ) =>
+
+      total +
+      Number(
+        gasto.importe || 0
+      ),
+
+    0
+
+  );
+
+}
+
+
+function totalPagado(){
+
+  return datos.pagos.reduce(
+
+    (
+      total,
+      pago
+    ) =>
+
+      total +
+      Number(
+        pago.importe || 0
+      ),
+
+    0
+
+  );
+
+}
+
+
+function vecinosPagados(){
+
+  return datos.vecinos.filter(
+
+    vecino =>
+      vecino.pagado
+
+  );
+
+}
+
+
+function vecinosNoPagados(){
+
+  return datos.vecinos.filter(
+
+    vecino =>
+      !vecino.pagado
+
+  );
+
+}
+
+
+function cuotaVecino(vecino){
+
+  return (
+
+    totalGastos() *
+
+    (
+      Number(
+        vecino.porcentaje || 0
+      ) / 100
+    )
+
+  );
+
+}
+
+
+function porcentajeCambio(){
+
+  const actual =
+    totalGastos();
+
+
+  const anterior =
+    Number(
+      datos.mesAnterior || 0
+    );
+
+
+  if(anterior===0){
+    return 0;
+  }
+
+
+  return (
+
+    (
+      actual -
+      anterior
+    ) /
+
+    anterior
+
+  ) * 100;
+
+}
+
+
+function diferenciaMes(){
+
+  return (
+
+    totalGastos() -
+
+    Number(
+      datos.mesAnterior || 0
+    )
+
+  );
+
+}
+function paginaGastos(){
+
+  const total = totalGastos();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        🧾 Gastos
+      </h1>
 
       <p>
-        Selecciona una factura de prueba.
+
+        Facturas y gastos de la comunidad.
+
       </p>
 
-      <input
-        type="file"
-        id="invoiceFile"
-        accept=".pdf,.jpg,.jpeg,.png"
+    </div>
+
+
+    <div
+      class="buttons"
+      style="margin-bottom:18px"
+    >
+
+      <button
+
+        class="btn"
+
+        onclick="
+          abrirModalGasto()
+        "
+
       >
 
+        ➕ Añadir gasto
 
-      <div
-        class="actions"
-        style="justify-content:center"
-      >
+      </button>
 
-        <button
-          class="btn btnPrimary"
-          onclick="analyzeInvoice()"
-        >
-          🤖 Analizar con IA
+    </div>
+
+
+    <div class="grid grid-2">
+
+
+      <div class="card">
+
+        <h2>
+          Desglose de gastos
+        </h2>
+
+
+        ${
+          datos.gastos.length === 0
+
+          ?
+
+          `
+            <div class="empty">
+
+              No hay gastos registrados.
+
+            </div>
+          `
+
+          :
+
+          datos.gastos.map(
+
+            gasto => `
+
+              <div class="expense-item">
+
+                <div class="expense-left">
+
+                  <div class="expense-icon">
+                    📄
+                  </div>
+
+                  <div>
+
+                    <b>
+
+                      ${escapar(
+                        gasto.tipo
+                      )}
+
+                    </b>
+
+                    <br>
+
+                    <span class="muted small">
+
+                      ${escapar(
+                        gasto.descripcion
+                      )}
+
+                    </span>
+
+                    <br>
+
+                    <span class="muted small">
+
+                      📅 ${escapar(
+                        gasto.fecha
+                      )}
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                <div style="text-align:right">
+
+                  <div class="expense-amount">
+
+                    ${dinero(
+                      gasto.importe
+                    )}
+
+                  </div>
+
+                  <br>
+
+                  <button
+
+                    class="btn danger"
+
+                    style="padding:4px 9px; font-size:12px"
+
+                    onclick="
+                      borrarGasto(
+                        ${gasto.id}
+                      )
+                    "
+
+                  >
+
+                    Eliminar
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            `
+
+          ).join("")
+
+        }
+
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>
+          Resumen económico
+        </h2>
+
+
+        <div class="stat-card">
+
+          <div class="stat-label">
+
+            Total acumulado
+
+          </div>
+
+          <div class="stat-value">
+
+            ${dinero(total)}
+
+          </div>
+
+          <div class="stat-extra">
+
+            Suma de todas las facturas del mes
+
+          </div>
+
+        </div>
+
+
+        <br>
+
+
+        <div class="alert info">
+
+          💡 <b>Información:</b> Las cuotas individuales se ajustan de manera proporcional al total acumulado de gastos.
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  `;
+
+}
+
+
+function paginaPagos(){
+
+  const total = totalGastos();
+
+  const pagado = totalPagado();
+
+  const pendiente = Math.max(total - pagado, 0);
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        💶 Estado de Pagos
+      </h1>
+
+      <p>
+
+        Seguimiento de cuotas cobradas y pendientes.
+
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-3">
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          Total
+        </div>
+
+        <div class="stat-label">
+
+          Cuota global
+
+        </div>
+
+        <div class="stat-value">
+
+          ${dinero(total)}
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          Cobrado
+        </div>
+
+        <div class="stat-label">
+
+          Total cobrado
+
+        </div>
+
+        <div class="stat-value">
+
+          ${dinero(pagado)}
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          Pendiente
+        </div>
+
+        <div class="stat-label">
+
+          Por cobrar
+
+        </div>
+
+        <div class="stat-value">
+
+          ${dinero(pendiente)}
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="card">
+
+      <h2>
+        Detalle de cobros por vivienda
+      </h2>
+
+
+      <div class="grid grid-2">
+
+
+        ${datos.vecinos.map(
+
+          vecino => {
+
+            const cuota = cuotaVecino(vecino);
+
+
+            return `
+
+              <div class="neighbor-box">
+
+                <div class="neighbor-top">
+
+                  <div style="display:flex; gap:12px; align-items:center">
+
+                    <div class="avatar">
+
+                      ${vecino.vivienda}
+
+                    </div>
+
+                    <div>
+
+                      <b>
+
+                        ${escapar(
+                          vecino.nombre
+                        )}
+
+                      </b>
+
+                      <br>
+
+                      <span class="muted small">
+
+                        Coeficiente: ${vecino.porcentaje}%
+
+                      </span>
+
+                    </div>
+
+                  </div>
+
+
+                  <span class="badge ${
+                    vecino.pagado
+                    ? "paid"
+                    : "unpaid"
+                  }">
+
+                    ${
+                      vecino.pagado
+                      ? "Pagado"
+                      : "Pendiente"
+                    }
+
+                  </span>
+
+                </div>
+
+
+                <hr class="divider">
+
+
+                <div style="display:flex; justify-between; align-items:center">
+
+                  <div>
+
+                    <span class="muted small">Cuota a pagar</span>
+
+                    <br>
+
+                    <b>${dinero(cuota)}</b>
+
+                  </div>
+
+
+                  <button
+
+                    class="btn ${
+                      vecino.pagado
+                      ? "secondary"
+                      : "success"
+                    }"
+
+                    onclick="
+                      cambiarEstadoPago(${vecino.id})
+                    "
+
+                  >
+
+                    ${
+                      vecino.pagado
+                      ? "Desmarcar"
+                      : "Registrar pago"
+                    }
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+
+        ).join("")}
+
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function paginaEstadisticas(){
+
+  const total = totalGastos();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        📊 Estadísticas
+      </h1>
+
+      <p>
+
+        Métricas y distribución de costes comunitarios.
+
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-2">
+
+
+      <div class="card">
+
+        <h2>
+          Distribución de gastos por categoría
+        </h2>
+
+
+        <div class="chart">
+
+          ${datos.gastos.map(
+
+            gasto => {
+
+              const porcentaje = total > 0 ? (gasto.importe / total) * 100 : 0;
+
+
+              return `
+
+                <div class="bar-column">
+
+                  <div class="bar-value">
+
+                    ${porcentaje.toFixed(0)}%
+
+                  </div>
+
+                  <div
+
+                    class="bar"
+
+                    style="height:${Math.max(porcentaje * 1.8, 6)}px"
+
+                  ></div>
+
+                  <div class="bar-label">
+
+                    ${escapar(gasto.tipo)}
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+
+          ).join("")}
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>
+          Resumen porcentual
+        </h2>
+
+
+        <ul>
+
+          ${datos.gastos.map(
+
+            gasto => {
+
+              const pct = total > 0 ? ((gasto.importe / total) * 100).toFixed(1) : 0;
+
+              return `
+
+                <li>
+
+                  <b>${escapar(gasto.tipo)}:</b> ${dinero(gasto.importe)} (${pct}%)
+
+                </li>
+
+              `;
+
+            }
+
+          ).join("")}
+
+        </ul>
+
+      </div>
+
+
+    </div>
+
+  `;
+
+}
+
+function generarResumenIA(){
+
+  const total = totalGastos();
+
+  const pendientes = vecinosNoPagados().length;
+
+
+  if(datos.gastos.length === 0){
+
+    return "No hay gastos cargados en el sistema actualmente para evaluar.";
+
+  }
+
+
+  if(pendientes === 0){
+
+    return `¡Cuentas al día! Se han procesado <b>${dinero(total)}</b> en gastos y todos los vecinos han completado el pago de sus respectivas cuotas.`;
+
+  }
+
+
+  return `Actualmente hay un total de <b>${dinero(total)}</b> en gastos y restan <b>${pendientes} vecino(s)</b> por abonar su cuota mensual.`;
+
+}
+
+
+function paginaIA(){
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        🤖 Asistente Inteligente
+      </h1>
+
+      <p>
+
+        Análisis automático e informes de la comunidad.
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h2>
+        Diagnóstico financiero
+      </h2>
+
+
+      <div class="ai-box">
+
+        <div class="ai-icon">
+          🧠
+        </div>
+
+
+        <div class="ai-result">
+
+          <p>
+
+            ${generarResumenIA()}
+
+          </p>
+
+          <br>
+
+          <p>
+
+            <b>Recomendación:</b>
+
+            ${
+              vecinosNoPagados().length > 0
+
+              ? "Se aconseja enviar un recordatorio formal a los vecinos con recibos pendientes antes del cierre de mes."
+
+              : "La liquidez actual es óptima. Se recomienda mantener la partida presupuestaria actual para imprevistos."
+
+            }
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+function paginaConfiguracion(){
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        ⚙️ Configuración
+      </h1>
+
+      <p>
+
+        Ajustes del edificio y datos de la comunidad.
+
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h2>
+        Datos de la Comunidad
+      </h2>
+
+
+      <form onsubmit="guardarConfiguracion(event)">
+
+
+        <div class="form-group">
+
+          <label>Nombre de la comunidad</label>
+
+          <input
+
+            type="text"
+
+            id="cfgNombre"
+
+            value="${escapar(datos.comunidad.nombre)}"
+
+            required
+
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>Dirección</label>
+
+          <input
+
+            type="text"
+
+            id="cfgDireccion"
+
+            value="${escapar(datos.comunidad.direccion)}"
+
+            required
+
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>Periodo / Mes actual</label>
+
+          <input
+
+            type="text"
+
+            id="cfgMes"
+
+            value="${escapar(datos.comunidad.mes)}"
+
+            required
+
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>Gasto total del mes anterior (€)</label>
+
+          <input
+
+            type="number"
+
+            step="0.01"
+
+            id="cfgMesAnterior"
+
+            value="${datos.mesAnterior}"
+
+            required
+
+          >
+
+        </div>
+
+
+        <button type="submit" class="btn">
+
+          💾 Guardar Cambios
+
         </button>
 
-      </div>
+
+      </form>
+
+    </div>
+
+  `;
+
+}
+
+
+function cambiarEstadoPago(id){
+
+  const vecino = datos.vecinos.find(v => v.id === id);
+
+  if(vecino){
+
+    vecino.pagado = !vecino.pagado;
+
+    guardar();
+
+    renderizar();
+
+  }
+
+}
+
+
+function borrarGasto(id){
+
+  datos.gastos = datos.gastos.filter(g => g.id !== id);
+
+  guardar();
+
+  renderizar();
+
+}
+
+
+function abrirModalVecino(){
+
+  const modalBox = document.getElementById("modalBox");
+
+
+  modalBox.innerHTML = `
+
+    <div class="modal-header">
+
+      <h2>➕ Añadir Vecino</h2>
+
+      <button class="close-btn" onclick="cerrarModal()">✕</button>
 
     </div>
 
 
-    <div
-      class="aiResult"
-      id="aiResult"
-    >
-
-      <div class="aiTitle">
-        ✨ Resultado de la IA
-      </div>
-
-      <p>
-        <strong>Proveedor:</strong>
-        IberLuz Servicios
-      </p>
-
-      <p>
-        <strong>Tipo:</strong>
-        Electricidad
-      </p>
-
-      <p>
-        <strong>Periodo:</strong>
-        01/07/2026 - 31/07/2026
-      </p>
-
-      <p>
-        <strong>Importe:</strong>
-        438,72 €
-      </p>
-
-      <p>
-        <strong>Fecha límite:</strong>
-        15/08/2026
-      </p>
+    <form onsubmit="guardarNuevoVecino(event)">
 
 
-      <div class="alert alertBlue">
+      <div class="form-group">
 
-        🤖 La IA ha identificado los datos.
-        En la versión real, el administrador deberá revisar y confirmar antes de aplicar el gasto.
+        <label>Nombre del propietario</label>
+
+        <input type="text" id="nuevoNombre" required placeholder="Ej. Juan Pérez">
 
       </div>
 
 
-      <button
-        class="btn btnGreen"
-        onclick="confirmInvoice()"
-      >
-        ✓ Confirmar factura
-      </button>
+      <div class="form-group">
+
+        <label>Vivienda / Puerta</label>
+
+        <input type="text" id="nuevaVivienda" required placeholder="Ej. 1º A">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Número de residentes</label>
+
+        <input type="number" id="nuevasPersonas" value="1" min="1" required>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Porcentaje de participación (%)</label>
+
+        <input type="number" step="0.01" id="nuevoPorcentaje" value="12.5" required>
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button type="submit" class="btn">Guardar Vecino</button>
+
+        <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
+
+      </div>
+
+
+    </form>
+
+  `;
+
+
+  document.getElementById("modal").classList.add("show");
+
+}
+
+
+function abrirModalGasto(){
+
+  const modalBox = document.getElementById("modalBox");
+
+
+  modalBox.innerHTML = `
+
+    <div class="modal-header">
+
+      <h2>➕ Registrar Gasto</h2>
+
+      <button class="close-btn" onclick="cerrarModal()">✕</button>
 
     </div>
 
-  </div>
+
+    <form onsubmit="guardarNuevoGasto(event)">
 
 
-  <div class="card">
+      <div class="form-group">
 
-    <div class="sectionTitle">
+        <label>Categoría / Tipo</label>
+
+        <input type="text" id="nuevoGastoTipo" required placeholder="Ej. Mantenimiento, Luz, Agua">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Descripción del concepto</label>
+
+        <input type="text" id="nuevoGastoDesc" required placeholder="Ej. Reparación de cerradura portal">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Importe (€)</label>
+
+        <input type="number" step="0.01" id="nuevoGastoImporte" required placeholder="0.00">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Fecha</label>
+
+        <input type="text" id="nuevoGastoFecha" value="${new Date().toLocaleDateString('es-ES')}" required>
+
+      </div>
+
+
+      <div class="buttons">
+
+        <button type="submit" class="btn">Registrar Gasto</button>
+
+        <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
+
+      </div>
+
+
+    </form>
+
+  `;
+
+
+  document.getElementById("modal").classList.add("show");
+
+}
+
+
+function cerrarModal(){
+
+  document.getElementById("modal").classList.remove("show");
+
+}
+
+
+function guardarNuevoVecino(e){
+
+  e.preventDefault();
+
+
+  const nuevo = {
+
+    id: datos.siguienteId++,
+
+    nombre: document.getElementById("nuevoNombre").value,
+
+    vivienda: document.getElementById("nuevaVivienda").value,
+
+    personas: parseInt(document.getElementById("nuevasPersonas").value) || 1,
+
+    porcentaje: parseFloat(document.getElementById("nuevoPorcentaje").value) || 0,
+
+    pagado: false
+
+  };
+
+
+  datos.vecinos.push(nuevo);
+
+  guardar();
+
+  cerrarModal();
+
+  renderizar();
+
+}
+
+
+function guardarNuevoGasto(e){
+
+  e.preventDefault();
+
+
+  const nuevo = {
+
+    id: datos.siguienteId++,
+
+    tipo: document.getElementById("nuevoGastoTipo").value,
+
+    descripcion: document.getElementById("nuevoGastoDesc").value,
+
+    importe: parseFloat(document.getElementById("nuevoGastoImporte").value) || 0,
+
+    fecha: document.getElementById("nuevoGastoFecha").value
+
+  };
+
+
+  datos.gastos.push(nuevo);
+
+  guardar();
+
+  cerrarModal();
+
+  renderizar();
+
+}
+
+
+function guardarConfiguracion(e){
+
+  e.preventDefault();
+
+
+  datos.comunidad.nombre = document.getElementById("cfgNombre").value;
+
+  datos.comunidad.direccion = document.getElementById("cfgDireccion").value;
+
+  datos.comunidad.mes = document.getElementById("cfgMes").value;
+
+  datos.mesAnterior = parseFloat(document.getElementById("cfgMesAnterior").value) || 0;
+
+
+  guardar();
+
+  renderizar();
+
+}
+
+
+window.addEventListener("DOMContentLoaded", () => {
+
+  renderizar();
+
+});
+
+</script>
+
+
+</body>
+
+</html>
+    <div class="card">
 
       <h2>
-        Facturas recientes
+
+        🧮 Cuánto corresponde
+        a cada vivienda
+
       </h2>
 
-    </div>
 
+      <div class="grid grid-3">
 
-    <div class="tableWrap">
 
-      <table>
+        ${datos.vecinos.map(
 
-        <thead>
+          vecino => `
 
-          <tr>
+            <div class="neighbor-box">
 
-            <th>
-              Proveedor
-            </th>
 
-            <th>
-              Tipo
-            </th>
+              <div class="neighbor-top">
 
-            <th>
-              Importe
-            </th>
 
-            <th>
-              Estado
-            </th>
+                <div>
 
-          </tr>
+                  <h3>
 
-        </thead>
+                    ${escapar(
+                      vecino.nombre
+                    )}
 
+                  </h3>
 
-        <tbody>
 
-          <tr>
+                  <div class="muted">
 
-            <td>
-              IberLuz Servicios
-            </td>
+                    ${escapar(
+                      vecino.vivienda
+                    )}
 
-            <td>
-              Electricidad
-            </td>
+                  </div>
 
-            <td>
-              438,72 €
-            </td>
+                </div>
 
-            <td>
-              <span class="badge paid">
-                Confirmada
-              </span>
-            </td>
 
-          </tr>
-          <tr>
+                <div class="avatar">
 
-            <td>
-              Aguas Madrid
-            </td>
+                  ${escapar(
 
-            <td>
-              Agua
-            </td>
+                    vecino.nombre
+                      .charAt(0)
+                      .toUpperCase()
 
-            <td>
-              182,40 €
-            </td>
+                  )}
 
-            <td>
-              <span class="badge paid">
-                Confirmada
-              </span>
-            </td>
+                </div>
 
-          </tr>
 
+              </div>
 
-          <tr>
 
-            <td>
-              Ascensores Plus
-            </td>
+              <hr
+                class="divider"
+              >
 
-            <td>
-              Ascensor
-            </td>
 
-            <td>
-              290,00 €
-            </td>
+              <div class="stat-label">
 
-            <td>
-              <span class="badge warning">
-                Revisar
-              </span>
-            </td>
+                Cuota estimada
 
-          </tr>
+              </div>
 
-        </tbody>
 
-      </table>
+              <div class="stat-value">
 
-    </div>
+                ${dinero(
+                  cuotaVecino(
+                    vecino
+                  )
+                )}
 
-  </div>
+              </div>
 
-</div>
 
-</section>
+              <p class="small">
 
+                ${vecino.porcentaje}%
+                del gasto comunitario.
 
+              </p>
 
-<!-- ==================== CONTADORES ==================== -->
 
-<section
-  class="page"
-  id="contadores"
->
+            </div>
 
-<h1>
-  Contadores
-</h1>
+          `
 
-<p class="subtitle">
-  Lecturas individuales para calcular consumos cuando existan contadores separados.
-</p>
+        ).join("")}
 
 
-<div class="card">
-
-  <div class="sectionTitle">
-
-    <h2>
-      Lecturas de prueba
-    </h2>
-
-    <button
-      class="btn btnPrimary"
-      onclick="openModal('meterModal')"
-    >
-      + Introducir lectura
-    </button>
-
-  </div>
-
-
-  <div class="tableWrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Vivienda
-          </th>
-
-          <th>
-            Tipo
-          </th>
-
-          <th>
-            Lectura anterior
-          </th>
-
-          <th>
-            Lectura actual
-          </th>
-
-          <th>
-            Consumo
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody id="metersTable">
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-
-<div
-  class="alert alertBlue"
-  style="margin-top:18px"
->
-
-  <span>
-    ℹ️
-  </span>
-
-  <div>
-
-    <strong>
-      Importante
-    </strong>
-
-    <br>
-
-    La aplicación no inventa consumos.
-    Para conocer el consumo individual necesita lecturas introducidas por el usuario o datos procedentes de contadores compatibles.
-
-  </div>
-
-</div>
-
-</section>
-
-
-
-<!-- ==================== PAGOS ==================== -->
-
-<section
-  class="page"
-  id="pagos"
->
-
-<h1>
-  Pagos
-</h1>
-
-<p class="subtitle">
-  Control de cuotas y pagos pendientes.
-</p>
-
-
-<div class="card">
-
-  <div class="sectionTitle">
-
-    <h2>
-      Estado de los vecinos
-    </h2>
-
-    <button
-      class="btn btnLight"
-      onclick="sendReminders()"
-    >
-      🔔 Enviar recordatorios
-    </button>
-
-  </div>
-
-
-  <div class="tableWrap">
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Vivienda
-          </th>
-
-          <th>
-            Vecino
-          </th>
-
-          <th>
-            Cuota
-          </th>
-
-          <th>
-            Estado
-          </th>
-
-          <th>
-            Acción
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody id="paymentsTable">
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
-</section>
-
-
-
-<!-- ==================== INFORMES ==================== -->
-
-<section
-  class="page"
-  id="informes"
->
-
-<h1>
-  Informes
-</h1>
-
-<p class="subtitle">
-  Resumen automático de la actividad económica.
-</p>
-<div class="grid2">
-
-
-  <div class="card">
-
-    <h2>
-      Resumen del mes
-    </h2>
-
-    <p>
-      La comunidad ha registrado
-      <strong>1.245 €</strong>
-      de gastos durante agosto.
-    </p>
-
-    <p>
-      El gasto más importante ha sido la electricidad, con
-      <strong>438,72 €</strong>.
-    </p>
-
-    <p>
-      Actualmente hay
-      <strong>186,75 €</strong>
-      pendientes de pago.
-    </p>
-
-    <div class="alert alertGreen">
-      📈 El gasto general es un 3,2 % inferior al mes anterior.
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>
-      Consejo de la IA
-    </h2>
-
-    <div class="aiBox">
-
-      <div class="aiTitle">
-        🤖 Análisis inteligente
       </div>
 
+    </div>
+
+  `;
+
+}
+
+
+function iconoGasto(tipo){
+
+  const iconos = {
+
+    "Ascensor":
+      "🛗",
+
+    "Luz":
+      "💡",
+
+    "Gas":
+      "🔥",
+
+    "Agua":
+      "💧",
+
+    "Limpieza":
+      "🧹",
+
+    "Seguro":
+      "🛡️",
+
+    "Reparación":
+      "🔧",
+
+    "Otro":
+      "📦"
+
+  };
+
+
+  return (
+
+    iconos[tipo]
+
+    ||
+
+    "📦"
+
+  );
+
+}
+
+
+/* =========================================================
+   AQUÍ CONTINÚA EL CÓDIGO DE LAS PÁGINAS:
+   GASTOS, PAGOS, ESTADÍSTICAS, IA Y CONFIGURACIÓN.
+========================================================= */
+
+function paginaGastos(){
+
+  const total =
+    totalGastos();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        🧾 Gastos
+      </h1>
+
       <p>
-        La factura eléctrica ha aumentado un 8,4 % respecto al mes anterior.
-        Conviene revisar el consumo de las zonas comunes y comprobar que no haya ningún equipo funcionando fuera de horario.
+
+        Control de las facturas
+        de la comunidad.
+
       </p>
 
+    </div>
+
+
+    <div
+      class="buttons"
+      style="margin-bottom:18px"
+    >
+
       <button
-        class="btn btnPrimary"
-        onclick="showMessage('En una versión real, la IA podría analizar meses anteriores y generar recomendaciones automáticamente.')"
+
+        class="btn"
+
+        onclick="
+          abrirModalGasto()
+        "
+
       >
-        Ver análisis completo
+
+        ➕ Añadir gasto
+
       </button>
 
     </div>
 
-  </div>
 
-</div>
-
-</section>
+    <div class="grid grid-3">
 
 
+      <div class="stat-card">
 
-<!-- ==================== VECINO ==================== -->
+        <div class="stat-icon">
+          🧾
+        </div>
 
-<section
-  class="page"
-  id="vecino"
->
+        <div class="stat-label">
+          Total de gastos
+        </div>
 
-<h1>
-  Mi vivienda
-</h1>
+        <div class="stat-value">
+          ${dinero(total)}
+        </div>
 
-<p class="subtitle">
-  Vista de ejemplo para un vecino.
-</p>
-
-
-<div class="cards">
+      </div>
 
 
-  <div class="card">
+      <div class="stat-card">
 
-    <div class="statIcon">
-      🏠
+        <div class="stat-icon">
+          📄
+        </div>
+
+        <div class="stat-label">
+          Facturas
+        </div>
+
+        <div class="stat-value">
+          ${datos.gastos.length}
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📈
+        </div>
+
+        <div class="stat-label">
+          Media por factura
+        </div>
+
+        <div class="stat-value">
+
+          ${
+            datos.gastos.length
+            ? dinero(
+                total /
+                datos.gastos.length
+              )
+            : dinero(0)
+          }
+
+        </div>
+
+      </div>
+
+
     </div>
 
-    <div class="statLabel">
-      Mi vivienda
+
+    <div class="card">
+
+      <h2>
+        Facturas registradas
+      </h2>
+
+
+      ${
+        datos.gastos.length
+
+        ?
+
+        datos.gastos.map(
+
+          gasto => `
+
+            <div class="expense-item">
+
+              <div class="expense-left">
+
+                <div class="expense-icon">
+
+                  ${iconoGasto(
+                    gasto.tipo
+                  )}
+
+                </div>
+
+
+                <div>
+
+                  <b>
+
+                    ${escapar(
+                      gasto.tipo
+                    )}
+
+                  </b>
+
+
+                  <div class="muted small">
+
+                    ${escapar(
+                      gasto.descripcion
+                    )}
+
+                  </div>
+
+
+                  <div class="muted small">
+
+                    ${escapar(
+                      gasto.fecha
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div>
+
+                <div
+                  class="expense-amount"
+                >
+
+                  ${dinero(
+                    gasto.importe
+                  )}
+
+                </div>
+
+
+                <button
+
+                  class="btn danger"
+
+                  onclick="
+                    eliminarGasto(
+                      ${gasto.id}
+                    )
+                  "
+
+                >
+
+                  Eliminar
+
+                </button>
+
+              </div>
+
+            </div>
+
+          `
+
+        ).join("")
+
+        :
+
+        `
+
+          <div class="empty">
+
+            No hay gastos registrados.
+
+          </div>
+
+        `
+
+      }
+
+
     </div>
 
-    <div class="statValue">
-      2ºA
+  `;
+
+}
+
+
+function paginaPagos(){
+
+  const pendientes =
+    vecinosNoPagados();
+
+
+  const pagados =
+    vecinosPagados();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        💶 Pagos
+      </h1>
+
+      <p>
+
+        Aquí puedes ver exactamente
+        quién ha pagado y quién no.
+
+      </p>
+
     </div>
 
-  </div>
+
+    <div class="grid grid-2">
 
 
-  <div class="card">
+      <div class="card">
 
-    <div class="statIcon">
-      💶
+        <h2>
+          ⚠️ Personas que NO han pagado
+        </h2>
+
+
+        ${
+          pendientes.length
+
+          ?
+
+          pendientes.map(
+
+            vecino => `
+
+              <div
+                class="neighbor-box"
+                style="margin-bottom:12px"
+              >
+
+                <div class="neighbor-top">
+
+                  <div>
+
+                    <h3>
+
+                      ${escapar(
+                        vecino.nombre
+                      )}
+
+                    </h3>
+
+                    <div class="muted">
+
+                      Vivienda:
+                      ${escapar(
+                        vecino.vivienda
+                      )}
+
+                    </div>
+
+                  </div>
+
+
+                  <span
+                    class="badge unpaid"
+                  >
+
+                    ✕ No pagado
+
+                  </span>
+
+                </div>
+
+
+                <hr
+                  class="divider"
+                >
+
+
+                <div class="stat-label">
+
+                  Cantidad correspondiente
+
+                </div>
+
+
+                <div class="stat-value">
+
+                  ${dinero(
+                    cuotaVecino(
+                      vecino
+                    )
+                  )}
+
+                </div>
+
+
+                <button
+
+                  class="btn success"
+
+                  onclick="
+                    cambiarEstadoPago(
+                      ${vecino.id}
+                    )
+                  "
+
+                >
+
+                  Marcar como pagado
+
+                </button>
+
+              </div>
+
+            `
+
+          ).join("")
+
+          :
+
+          `
+
+            <div class="alert success">
+
+              🎉 Todos los vecinos
+              han pagado.
+
+            </div>
+
+          `
+
+        }
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>
+          ✅ Personas que han pagado
+        </h2>
+
+
+        ${
+          pagados.length
+
+          ?
+
+          pagados.map(
+
+            vecino => `
+
+              <div
+                class="neighbor-box"
+                style="margin-bottom:12px"
+              >
+
+                <div class="neighbor-top">
+
+                  <div>
+
+                    <h3>
+
+                      ${escapar(
+                        vecino.nombre
+                      )}
+
+                    </h3>
+
+                    <div class="muted">
+
+                      ${escapar(
+                        vecino.vivienda
+                      )}
+
+                    </div>
+
+                  </div>
+
+
+                  <span
+                    class="badge paid"
+                  >
+
+                    ✓ Pagado
+
+                  </span>
+
+                </div>
+
+
+                <hr
+                  class="divider"
+                >
+
+
+                <div class="stat-label">
+
+                  Cantidad
+
+                </div>
+
+
+                <div class="stat-value">
+
+                  ${dinero(
+                    cuotaVecino(
+                      vecino
+                    )
+                  )}
+
+                </div>
+
+
+                <button
+
+                  class="btn danger"
+
+                  onclick="
+                    cambiarEstadoPago(
+                      ${vecino.id}
+                    )
+                  "
+
+                >
+
+                  Marcar como pendiente
+
+                </button>
+
+              </div>
+
+            `
+
+          ).join("")
+
+          :
+
+          `
+
+            <div class="empty">
+
+              Todavía no hay pagos.
+
+            </div>
+
+          `
+
+        }
+
+      </div>
+
+
     </div>
 
-    <div class="statLabel">
-      Cuota de agosto
+
+    <div class="card">
+
+      <h2>
+        📊 Resumen de cobros
+      </h2>
+
+
+      <div class="progress-wrapper">
+
+        <div class="progress-top">
+
+          <span>
+            Vecinos que han pagado
+          </span>
+
+          <b>
+
+            ${
+              datos.vecinos.length
+              ?
+              (
+                pagados.length /
+                datos.vecinos.length *
+                100
+              ).toFixed(1)
+              :
+              0
+            }%
+
+          </b>
+
+        </div>
+
+
+        <div class="progress">
+
+          <div
+
+            class="progress-bar"
+
+            style="
+              width:${
+                datos.vecinos.length
+                ?
+                (
+                  pagados.length /
+                  datos.vecinos.length *
+                  100
+                )
+                :
+                0
+              }%
+            "
+
+          ></div>
+
+        </div>
+
+      </div>
+
+
     </div>
 
-    <div class="statValue">
-      62,25 €
+  `;
+
+}
+function paginaEstadisticas(){
+
+  const total =
+    totalGastos();
+
+
+  const anterior =
+    Number(
+      datos.mesAnterior || 0
+    );
+
+
+  const cambio =
+    porcentajeCambio();
+
+
+  const diferencia =
+    diferenciaMes();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        📊 Estadísticas
+      </h1>
+
+      <p>
+
+        Evolución de los gastos
+        y situación de la comunidad.
+
+      </p>
+
     </div>
 
-  </div>
+
+    <div class="grid grid-4">
 
 
-  <div class="card">
+      <div class="stat-card">
 
-    <div class="statIcon">
-      📊
+        <div class="stat-icon">
+          💰
+        </div>
+
+        <div class="stat-label">
+          Este mes
+        </div>
+
+        <div class="stat-value">
+          ${dinero(total)}
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          📅
+        </div>
+
+        <div class="stat-label">
+          Mes anterior
+        </div>
+
+        <div class="stat-value">
+          ${dinero(anterior)}
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ${
+            cambio <= 0
+            ? "📉"
+            : "📈"
+          }
+        </div>
+
+        <div class="stat-label">
+          Variación
+        </div>
+
+        <div class="stat-value">
+
+          ${
+            cambio >= 0
+            ? "+"
+            : ""
+          }${cambio.toFixed(1)}%
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🧮
+        </div>
+
+        <div class="stat-label">
+          Diferencia
+        </div>
+
+        <div class="stat-value">
+          ${dinero(diferencia)}
+        </div>
+
+      </div>
+
+
     </div>
 
-    <div class="statLabel">
-      Mi consumo
+
+    <div class="card">
+
+      <h2>
+        📈 Comparación de gastos
+      </h2>
+
+
+      <div class="chart">
+
+        <div class="bar-column">
+
+          <div class="bar-value">
+            ${dinero(anterior)}
+          </div>
+
+          <div
+
+            class="bar"
+
+            style="
+              height:${
+                Math.max(
+                  8,
+                  Math.min(
+                    100,
+                    anterior /
+                    Math.max(
+                      anterior,
+                      total
+                    ) * 100
+                  )
+                )
+              }%
+            "
+
+          ></div>
+
+          <div class="bar-label">
+            Mes anterior
+          </div>
+
+        </div>
+
+
+        <div class="bar-column">
+
+          <div class="bar-value">
+            ${dinero(total)}
+          </div>
+
+          <div
+
+            class="bar"
+
+            style="
+              height:${
+                Math.max(
+                  8,
+                  Math.min(
+                    100,
+                    total /
+                    Math.max(
+                      anterior,
+                      total
+                    ) * 100
+                  )
+                )
+              }%
+            "
+
+          ></div>
+
+          <div class="bar-label">
+            Este mes
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="statValue">
-      70 kWh
+
+    <div class="card">
+
+      <h2>
+        🔍 Desglose de gastos
+      </h2>
+
+
+      ${
+        datos.gastos.map(
+
+          gasto => `
+
+            <div class="expense-item">
+
+              <div class="expense-left">
+
+                <div class="expense-icon">
+
+                  ${iconoGasto(
+                    gasto.tipo
+                  )}
+
+                </div>
+
+
+                <div>
+
+                  <b>
+
+                    ${escapar(
+                      gasto.tipo
+                    )}
+
+                  </b>
+
+                  <div class="muted">
+
+                    ${escapar(
+                      gasto.descripcion
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <div>
+
+                <div class="expense-amount">
+
+                  ${dinero(
+                    gasto.importe
+                  )}
+
+                </div>
+
+                <div class="small muted">
+
+                  ${
+                    total
+                    ?
+                    (
+                      gasto.importe /
+                      total *
+                      100
+                    ).toFixed(1)
+                    :
+                    0
+                  }%
+                  del total
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `
+
+        ).join("")
+
+      }
+
     </div>
 
-  </div>
+  `;
+
+}
+function generarResumenIA(){
+
+  const total =
+    totalGastos();
 
 
-  <div class="card">
+  const anterior =
+    Number(
+      datos.mesAnterior || 0
+    );
 
-    <div class="statIcon">
-      ✅
+
+  const cambio =
+    porcentajeCambio();
+
+
+  const pendientes =
+    vecinosNoPagados().length;
+
+
+  let texto =
+    "";
+
+
+  if(cambio < 0){
+
+    texto +=
+      `La comunidad está gastando un
+      ${Math.abs(cambio).toFixed(1)}%
+      menos que el mes anterior. `;
+
+  }
+
+  else if(cambio > 0){
+
+    texto +=
+      `El gasto ha aumentado un
+      ${cambio.toFixed(1)}%
+      respecto al mes anterior. `;
+
+  }
+
+  else{
+
+    texto +=
+      `El gasto se mantiene igual
+      que el mes anterior. `;
+
+  }
+
+
+  texto +=
+    `Este mes se han registrado
+    ${dinero(total)} de gastos. `;
+
+
+  if(pendientes > 0){
+
+    texto +=
+      `Hay ${pendientes}
+      vecinos pendientes de pago.`;
+
+  }
+
+  else{
+
+    texto +=
+      `Todos los vecinos
+      están al corriente.`;
+
+  }
+
+
+  return texto;
+
+}
+
+
+function paginaIA(){
+
+  const total =
+    totalGastos();
+
+
+  const cambio =
+    porcentajeCambio();
+
+
+  const pendientes =
+    vecinosNoPagados();
+
+
+  return `
+
+    <div class="page-title">
+
+      <h1>
+        🤖 Análisis inteligente
+      </h1>
+
+      <p>
+
+        Una demostración de cómo
+        ComuniGest podría analizar
+        automáticamente la comunidad.
+
+      </p>
+
     </div>
 
-    <div class="statLabel">
-      Estado
+
+    <div class="card">
+
+      <div class="ai-box">
+
+        <div class="ai-icon">
+          🤖
+        </div>
+
+
+        <h2>
+          Resumen de la comunidad
+        </h2>
+
+
+        <p>
+
+          ${generarResumenIA()}
+
+        </p>
+
+
+        <div class="ai-result">
+
+
+          <div class="alert info">
+
+            💡 La aplicación puede
+            comparar los gastos,
+            calcular porcentajes y
+            detectar pagos pendientes.
+
+          </div>
+
+
+          <br>
+
+
+          <div class="grid grid-3">
+
+
+            <div>
+
+              <div class="stat-label">
+                Gasto actual
+              </div>
+
+              <div class="stat-value">
+                ${dinero(total)}
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="stat-label">
+                Variación
+              </div>
+
+              <div class="stat-value">
+
+                ${
+                  cambio >= 0
+                  ? "+"
+                  : ""
+                }${cambio.toFixed(1)}%
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <div class="stat-label">
+                Pagos pendientes
+              </div>
+
+              <div class="stat-value">
+                ${pendientes.length}
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div
-      class="statValue"
-      style="font-size:20px"
-    >
-      Al día
-    </div>
 
-  </div>
+    <div class="card">
 
-</div>
+      <h2>
+        💡 Recomendaciones
+      </h2>
 
 
-<div class="card">
+      <div class="alert success">
 
-  <div class="sectionTitle">
+        ${
+          cambio > 0
 
-    <h2>
-      Desglose de mi cuota
-    </h2>
+          ?
 
-  </div>
+          "Revisar las facturas de este mes para detectar qué gasto ha aumentado."
 
+          :
 
-  <table>
+          "Los gastos están controlados respecto al mes anterior."
 
-    <thead>
+        }
 
-      <tr>
+      </div>
 
-        <th>
-          Concepto
-        </th>
-
-        <th>
-          Importe
-        </th>
-
-      </tr>
-
-    </thead>
-
-
-    <tbody>
-
-      <tr>
-        <td>Electricidad</td>
-        <td>21,94 €</td>
-      </tr>
-
-      <tr>
-        <td>Agua</td>
-        <td>9,12 €</td>
-      </tr>
-
-      <tr>
-        <td>Ascensor</td>
-        <td>14,50 €</td>
-      </tr>
-
-      <tr>
-        <td>Limpieza</td>
-        <td>10,20 €</td>
-      </tr>
-
-      <tr>
-        <td>Otros</td>
-        <td>6,49 €</td>
-      </tr>
-
-      <tr>
-        <td>
-          <strong>Total</strong>
-        </td>
-
-        <td>
-          <strong>62,25 €</strong>
-        </td>
-      </tr>
-
-    </tbody>
-
-  </table>
-
-
-  <div class="actions">
-
-    <button
-      class="btn btnGreen"
-      onclick="showMessage('Demo: en la versión real aquí se conectaría un sistema de pago.')"
-    >
-      💳 Pagar cuota
-    </button>
-
-    <button
-      class="btn btnLight"
-      onclick="showMessage('Demo: aquí se podría descargar el recibo.')"
-    >
-      🧾 Ver recibo
-    </button>
-
-  </div>
-
-</div>
-
-</section>
-<!-- ==================== AVISOS ==================== -->
-
-<section
-  class="page"
-  id="avisos"
->
-
-<h1>
-  Avisos
-</h1>
-
-<p class="subtitle">
-  Notificaciones de la comunidad.
-</p>
-
-
-<div class="card">
-
-  <div class="alert alertRed">
-
-    🔔
-
-    <div>
-
-      <strong>
-        Pago pendiente
-      </strong>
 
       <br>
 
-      La vivienda 4ºB todavía no ha realizado el pago de agosto.
+
+      <div class="alert warning">
+
+        ${
+          pendientes.length
+
+          ?
+
+          `Hay ${pendientes.length}
+           vecinos que todavía no han
+           pagado. Puedes revisar sus
+           nombres desde la sección Pagos.`
+
+          :
+
+          "No hay pagos pendientes."
+
+        }
+
+      </div>
 
     </div>
 
-  </div>
+  `;
+
+}
 
 
-  <div class="alert alertBlue">
+function paginaConfiguracion(){
 
-    📄
+  return `
 
-    <div>
+    <div class="page-title">
 
-      <strong>
-        Nueva factura
-      </strong>
+      <h1>
+        ⚙️ Configuración
+      </h1>
 
-      <br>
-
-      Se ha añadido una factura de electricidad de 438,72 €.
-
-    </div>
-
-  </div>
-
-
-  <div class="alert alertGreen">
-
-    ✅
-
-    <div>
-
-      <strong>
-        Pago recibido
-      </strong>
-
-      <br>
-
-      La vivienda 2ºA ha realizado su pago.
+      <p>
+        Configura los datos de la comunidad.
+      </p>
 
     </div>
 
-  </div>
 
-</div>
+    <div class="card">
 
-</section>
-
-
-<div class="footerNote">
-
-  VecinIA Demo · Esta versión utiliza datos ficticios y no procesa pagos reales.
-
-</div>
-
-</main>
-
-</div>
+      <h2>
+        🏢 Datos de la comunidad
+      </h2>
 
 
+      <div class="form-group">
 
-<!-- ===================================================== -->
-<!-- MODAL: LISTA DE PAGOS -->
-<!-- ===================================================== -->
+        <label>
+          Nombre
+        </label>
 
-<div
-  class="modal"
-  id="paymentsModal"
->
+        <input
+          id="configNombre"
+          value="${escapar(
+            datos.comunidad.nombre
+          )}"
+        >
 
-<div class="modalBox">
-
-  <div class="modalHead">
-
-    <h2 id="paymentsModalTitle">
-      Pagos pendientes
-    </h2>
-
-    <button
-      class="close"
-      onclick="closePaymentsModal()"
-    >
-      ×
-    </button>
-
-  </div>
+      </div>
 
 
-  <div
-    class="modalSummary"
-    id="paymentsModalSummary"
-  >
-  </div>
+      <div class="form-group">
+
+        <label>
+          Dirección
+        </label>
+
+        <input
+          id="configDireccion"
+          value="${escapar(
+            datos.comunidad.direccion
+          )}"
+        >
+
+      </div>
 
 
-  <div id="paymentsModalList">
-  </div>
+      <div class="form-group">
+
+        <label>
+          Mes actual
+        </label>
+
+        <input
+          id="configMes"
+          value="${escapar(
+            datos.comunidad.mes
+          )}"
+        >
+
+      </div>
 
 
-</div>
+      <div class="form-group">
 
-</div>
+        <label>
+          Gastos del mes anterior (€)
+        </label>
 
+        <input
+          id="configAnterior"
+          type="number"
+          step="0.01"
+          value="${datos.mesAnterior}"
+        >
 
-
-<!-- MODAL VIVIENDA -->
-
-<div
-  class="modal"
-  id="homeModal"
->
-
-<div class="modalBox">
-
-  <div class="modalHead">
-
-    <h2>
-      Añadir vivienda
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('homeModal')"
-    >
-      ×
-    </button>
-
-  </div>
+      </div>
 
 
-  <div class="formGrid">
+      <button
 
-    <div class="field">
+        class="btn"
+
+        onclick="
+          guardarConfiguracion()
+        "
+
+      >
+
+        Guardar cambios
+
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <h2>
+        💾 Datos de la demo
+      </h2>
+
+
+      <p class="muted">
+
+        Esta versión guarda los datos
+        únicamente en el navegador.
+
+      </p>
+
+
+      <button
+
+        class="btn danger"
+
+        onclick="
+          borrarDatos()
+        "
+
+      >
+
+        Restablecer demo
+
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+
+function abrirModalVecino(id=null){
+
+  const vecino =
+    id
+    ?
+    datos.vecinos.find(
+      v => v.id === id
+    )
+    :
+    null;
+
+
+  document.getElementById(
+    "modalBox"
+  ).innerHTML = `
+
+    <div class="modal-header">
+
+      <h2>
+
+        ${
+          vecino
+          ? "Editar vecino"
+          : "Añadir vecino"
+        }
+
+      </h2>
+
+
+      <button
+
+        class="close-btn"
+
+        onclick="
+          cerrarModal()
+        "
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>
+        Nombre
+      </label>
+
+      <input
+        id="vecinoNombre"
+        value="${
+          vecino
+          ? escapar(vecino.nombre)
+          : ""
+        }"
+        placeholder="Vecino A"
+      >
+
+    </div>
+
+
+    <div class="form-group">
 
       <label>
         Vivienda
       </label>
 
       <input
-        id="homeName"
-        placeholder="Ej. 3ºB"
+        id="vecinoVivienda"
+        value="${
+          vecino
+          ? escapar(vecino.vivienda)
+          : ""
+        }"
+        placeholder="1º A"
       >
 
     </div>
 
 
-    <div class="field">
+    <div class="form-group">
 
       <label>
-        Vecino
+        Número de personas
       </label>
 
       <input
-        id="homeOwner"
-        placeholder="Nombre"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Coeficiente (%)
-      </label>
-
-      <input
-        id="homeCoef"
+        id="vecinoPersonas"
         type="number"
-        placeholder="5"
+        min="1"
+        value="${
+          vecino
+          ? vecino.personas
+          : 1
+        }"
       >
 
     </div>
 
 
-    <div class="field">
+    <div class="form-group">
 
       <label>
-        Cuota mensual (€)
+        Porcentaje de participación
       </label>
 
       <input
-        id="homeFee"
+        id="vecinoPorcentaje"
         type="number"
-        placeholder="62.25"
-      >
-
-    </div>
-
-  </div>
-
-
-  <div class="actions">
-
-    <button
-      class="btn btnPrimary"
-      onclick="addHome()"
-    >
-      Guardar vivienda
-    </button>
-
-    <button
-      class="btn btnLight"
-      onclick="closeModal('homeModal')"
-    >
-      Cancelar
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-<!-- MODAL GASTO -->
-
-<div
-  class="modal"
-  id="expenseModal"
->
-
-<div class="modalBox">
-
-  <div class="modalHead">
-
-    <h2>
-      Añadir gasto
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('expenseModal')"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="formGrid">
-
-    <div class="field">
-
-      <label>
-        Concepto
-      </label>
-
-      <input
-        id="expenseName"
-        placeholder="Ej. Electricidad"
+        min="0"
+        max="100"
+        step="0.01"
+        value="${
+          vecino
+          ? vecino.porcentaje
+          : 0
+        }"
       >
 
     </div>
 
 
-    <div class="field">
+    <div class="buttons">
+
+      <button
+
+        class="btn"
+
+        onclick="
+          guardarVecino(
+            ${id || "null"}
+          )
+        "
+
+      >
+
+        Guardar
+
+      </button>
+
+
+      <button
+
+        class="btn secondary"
+
+        onclick="
+          cerrarModal()
+        "
+
+      >
+
+        Cancelar
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  abrirModal();
+
+}
+function guardarVecino(id){
+
+  const nombre =
+    document.getElementById(
+      "vecinoNombre"
+    ).value.trim();
+
+
+  const vivienda =
+    document.getElementById(
+      "vecinoVivienda"
+    ).value.trim();
+
+
+  const personas =
+    Number(
+      document.getElementById(
+        "vecinoPersonas"
+      ).value
+    );
+
+
+  const porcentaje =
+    Number(
+      document.getElementById(
+        "vecinoPorcentaje"
+      ).value
+    );
+
+
+  if(!nombre || !vivienda){
+
+    alert(
+      "Completa el nombre y la vivienda."
+    );
+
+    return;
+
+  }
+
+
+  if(id){
+
+    const vecino =
+      datos.vecinos.find(
+        v => v.id === id
+      );
+
+
+    if(vecino){
+
+      vecino.nombre =
+        nombre;
+
+      vecino.vivienda =
+        vivienda;
+
+      vecino.personas =
+        personas;
+
+      vecino.porcentaje =
+        porcentaje;
+
+    }
+
+  }
+
+  else{
+
+    datos.vecinos.push({
+
+      id:
+        datos.siguienteId++,
+
+      nombre:
+        nombre,
+
+      vivienda:
+        vivienda,
+
+      personas:
+        personas,
+
+      porcentaje:
+        porcentaje,
+
+      pagado:
+        false
+
+    });
+
+  }
+
+
+  guardar();
+
+  cerrarModal();
+
+  renderizar();
+
+}
+
+
+function editarVecino(id){
+
+  abrirModalVecino(id);
+
+}
+
+
+function cambiarEstadoPago(id){
+
+  const vecino =
+    datos.vecinos.find(
+      v => v.id === id
+    );
+
+
+  if(!vecino){
+    return;
+  }
+
+
+  vecino.pagado =
+    !vecino.pagado;
+
+
+  guardar();
+
+  renderizar();
+
+}
+
+
+function abrirModalGasto(){
+
+  document.getElementById(
+    "modalBox"
+  ).innerHTML = `
+
+    <div class="modal-header">
+
+      <h2>
+        ➕ Añadir gasto
+      </h2>
+
+
+      <button
+
+        class="close-btn"
+
+        onclick="
+          cerrarModal()
+        "
+
+      >
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div class="form-group">
 
       <label>
-        Tipo
+        Tipo de gasto
       </label>
 
-      <select id="expenseType">
+      <select id="gastoTipo">
 
         <option>
-          Electricidad
+          Ascensor
         </option>
 
         <option>
-          Agua
+          Luz
         </option>
 
         <option>
@@ -2226,7 +4977,7 @@ th{
         </option>
 
         <option>
-          Ascensor
+          Agua
         </option>
 
         <option>
@@ -2234,11 +4985,15 @@ th{
         </option>
 
         <option>
+          Seguro
+        </option>
+
+        <option>
           Reparación
         </option>
 
         <option>
-          Otros
+          Otro
         </option>
 
       </select>
@@ -2246,1185 +5001,124 @@ th{
     </div>
 
 
-    <div class="field">
+    <div class="form-group">
+
+      <label>
+        Descripción
+      </label>
+
+      <input
+        id="gastoDescripcion"
+        placeholder="Descripción del gasto"
+      >
+
+    </div>
+
+
+    <div class="form-group">
 
       <label>
         Importe (€)
       </label>
 
       <input
-        id="expenseAmount"
+        id="gastoImporte"
         type="number"
         step="0.01"
+        min="0"
+        placeholder="0.00"
       >
 
     </div>
 
 
-    <div class="field">
+    <div class="form-group">
 
       <label>
-        Proveedor
+        Fecha
       </label>
 
       <input
-        id="expenseProvider"
-        placeholder="Empresa"
-      >
-
-    </div>
-
-  </div>
-
-
-  <div class="actions">
-
-    <button
-      class="btn btnPrimary"
-      onclick="addExpense()"
-    >
-      Guardar gasto
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-
-
-
-<!-- MODAL CONTADOR -->
-
-<div
-  class="modal"
-  id="meterModal"
->
-
-<div class="modalBox">
-
-  <div class="modalHead">
-
-    <h2>
-      Introducir lectura
-    </h2>
-
-    <button
-      class="close"
-      onclick="closeModal('meterModal')"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="formGrid">
-
-    <div class="field">
-
-      <label>
-        Vivienda
-      </label>
-
-      <select id="meterHome">
-
-        <option>1ºA</option>
-        <option>1ºB</option>
-        <option>2ºA</option>
-        <option>2ºB</option>
-        <option>3ºA</option>
-
-      </select>
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Tipo
-      </label>
-
-      <select id="meterType">
-
-        <option>
-          Electricidad
-        </option>
-
-        <option>
-          Agua
-        </option>
-
-        <option>
-          Gas
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Lectura anterior
-      </label>
-
-      <input
-        id="meterPrevious"
-        type="number"
+        id="gastoFecha"
+        type="date"
       >
 
     </div>
 
 
-    <div class="field">
+    <div class="buttons">
 
-      <label>
-        Lectura actual
-      </label>
+      <button
 
-      <input
-        id="meterCurrent"
-        type="number"
+        class="btn"
+
+        onclick="
+          guardarGasto()
+        "
+
       >
+
+        Guardar gasto
+
+      </button>
+
+
+      <button
+
+        class="btn secondary"
+
+        onclick="
+          cerrarModal()
+        "
+
+      >
+
+        Cancelar
+
+      </button>
 
     </div>
 
-  </div>
+  `;
 
 
-  <div class="actions">
-
-    <button
-      class="btn btnPrimary"
-      onclick="addMeter()"
-    >
-      Guardar lectura
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-
-
-
-<script>
-
-const STORAGE_KEY="vecinia_demo_v2";
-
-
-let data={
-
-  homes:[
-
-    {
-      home:"1ºA",
-      owner:"María López",
-      coef:5,
-      fee:62.25,
-      status:"paid"
-    },
-
-    {
-      home:"1ºB",
-      owner:"Carlos Martín",
-      coef:5,
-      fee:62.25,
-      status:"paid"
-    },
-
-    {
-      home:"2ºA",
-      owner:"Ana García",
-      coef:5,
-      fee:62.25,
-      status:"paid"
-    },
-
-    {
-      home:"2ºB",
-      owner:"Luis Pérez",
-      coef:5,
-      fee:62.25,
-      status:"pending"
-    },
-    {
-      home:"3ºA",
-      owner:"Sofía Ruiz",
-      coef:5,
-      fee:62.25,
-      status:"paid"
-    },
-
-    {
-      home:"3ºB",
-      owner:"Javier Díaz",
-      coef:5,
-      fee:62.25,
-      status:"pending"
-    },
-
-    {
-      home:"4ºA",
-      owner:"Laura Gómez",
-      coef:5,
-      fee:62.25,
-      status:"paid"
-    },
-
-    {
-      home:"4ºB",
-      owner:"Pedro Sánchez",
-      coef:5,
-      fee:62.25,
-      status:"pending"
-    }
-
-  ],
-
-
-  expenses:[
-
-    {
-      name:"Factura de electricidad",
-      type:"Electricidad",
-      provider:"IberLuz Servicios",
-      amount:438.72
-    },
-
-    {
-      name:"Factura de agua",
-      type:"Agua",
-      provider:"Aguas Madrid",
-      amount:182.40
-    },
-
-    {
-      name:"Mantenimiento del ascensor",
-      type:"Ascensor",
-      provider:"Ascensores Plus",
-      amount:290
-    },
-
-    {
-      name:"Limpieza de zonas comunes",
-      type:"Limpieza",
-      provider:"Limpiezas Central",
-      amount:210
-    },
-
-    {
-      name:"Reparación de puerta",
-      type:"Reparación",
-      provider:"Reparaciones 24H",
-      amount:124
-    }
-
-  ],
-
-
-  meters:[
-
-    {
-      home:"1ºA",
-      type:"Electricidad",
-      previous:1200,
-      current:1265
-    },
-
-    {
-      home:"1ºB",
-      type:"Electricidad",
-      previous:1400,
-      current:1462
-    },
-
-    {
-      home:"2ºA",
-      type:"Electricidad",
-      previous:1240,
-      current:1310
-    },
-
-    {
-      home:"2ºB",
-      type:"Electricidad",
-      previous:1100,
-      current:1175
-    },
-
-    {
-      home:"3ºA",
-      type:"Electricidad",
-      previous:1600,
-      current:1651
-    }
-
-  ]
-
-};
-
-
-
-function loadData(){
-
-  const saved=
-    localStorage.getItem(STORAGE_KEY);
-
-  if(saved){
-
-    try{
-
-      data=JSON.parse(saved);
-
-    }catch(e){}
-
-  }
+  abrirModal();
 
 }
 
 
+function guardarGasto(){
 
-function saveData(){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(data)
-  );
-
-}
-
-
-
-function money(value){
-
-  return Number(value).toLocaleString(
-    "es-ES",
-    {
-      minimumFractionDigits:2,
-      maximumFractionDigits:2
-    }
-  )+" €";
-
-}
-
-
-
-function showPage(id,button){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(
-      p=>p.classList.remove("active")
-    );
-
-
-  const page=
-    document.getElementById(id);
-
-
-  if(page){
-
-    page.classList.add("active");
-
-  }
-
-
-  document
-    .querySelectorAll(".navBtn")
-    .forEach(
-      b=>b.classList.remove("active")
-    );
-
-
-  if(button){
-
-    button.classList.add("active");
-
-  }
-
-
-  document
-    .getElementById("sidebar")
-    .classList.remove("open");
-
-
-  renderAll();
-
-}
-
-
-
-function toggleMenu(){
-
-  document
-    .getElementById("sidebar")
-    .classList.toggle("open");
-
-}
-
-
-
-function openModal(id){
-
-  document
-    .getElementById(id)
-    .classList.add("show");
-
-}
-
-
-
-function closeModal(id){
-
-  document
-    .getElementById(id)
-    .classList.remove("show");
-
-}
-
-
-
-function showMessage(text){
-
-  alert(text);
-
-}
-
-
-
-/* =====================================================
-   NUEVO SISTEMA DE PAGOS
-   ===================================================== */
-
-
-function openPendingModal(){
-
-  const pending=
-    data.homes.filter(
-      h=>h.status==="pending"
-    );
-
-
-  document
-    .getElementById("paymentsModalTitle")
-    .textContent=
-      "⚠️ Personas que no han pagado";
-  const total=
-    pending.reduce(
-      (sum,h)=>sum+Number(h.fee),
-      0
-    );
-
-
-  document
-    .getElementById("paymentsModalSummary")
-    .innerHTML=`
-
-      <strong>
-        ${pending.length}
-        ${pending.length===1 ? "vivienda tiene":"viviendas tienen"}
-        el pago pendiente.
-      </strong>
-
-      <br>
-
-      Total pendiente:
-      <strong>${money(total)}</strong>
-
-    `;
-
-
-  renderPaymentList(
-    pending,
-    "pending"
-  );
-
-
-  document
-    .getElementById("paymentsModal")
-    .classList.add("show");
-
-}
-
-
-
-function openPaidModal(){
-
-  const paid=
-    data.homes.filter(
-      h=>h.status==="paid"
-    );
-
-
-  document
-    .getElementById("paymentsModalTitle")
-    .textContent=
-      "✅ Personas que han pagado";
-
-
-  const total=
-    paid.reduce(
-      (sum,h)=>sum+Number(h.fee),
-      0
-    );
-
-
-  document
-    .getElementById("paymentsModalSummary")
-    .innerHTML=`
-
-      <strong>
-        ${paid.length}
-        ${paid.length===1 ? "vivienda ha":"viviendas han"}
-        pagado.
-      </strong>
-
-      <br>
-
-      Total pagado:
-      <strong>${money(total)}</strong>
-
-    `;
-
-
-  renderPaymentList(
-    paid,
-    "paid"
-  );
-
-
-  document
-    .getElementById("paymentsModal")
-    .classList.add("show");
-
-}
-
-
-
-function renderPaymentList(
-  people,
-  status
-){
-
-  const container=
+  const tipo =
     document.getElementById(
-      "paymentsModalList"
-    );
+      "gastoTipo"
+    ).value;
 
 
-  if(!people.length){
-
-    container.innerHTML=`
-
-      <div class="empty">
-
-        ${
-          status==="pending"
-          ? "🎉 No hay pagos pendientes."
-          : "Todavía no hay pagos registrados."
-        }
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML="";
-
-
-  people.forEach(
-    (person,index)=>{
-
-      const row=
-        document.createElement("div");
-
-
-      row.className=
-        "personRow";
-
-
-      let action="";
-
-
-      if(status==="pending"){
-
-        action=`
-
-          <button
-            class="reminderBtn"
-            onclick="sendIndividualReminder('${escapeHTML(person.home)}','${escapeHTML(person.owner)}')"
-          >
-            🔔 Recordar pago
-          </button>
-
-        `;
-
-      }else{
-
-        action=`
-
-          <span
-            class="badge paid"
-          >
-            ✓ Pagado
-          </span>
-
-        `;
-
-      }
-
-
-      row.innerHTML=`
-
-        <div class="personInfo">
-
-          <div class="houseIcon">
-            🏠
-          </div>
-
-          <div>
-
-            <div class="personName">
-              ${escapeHTML(person.home)}
-            </div>
-
-            <div class="personHome">
-              ${escapeHTML(person.owner)}
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="personAmount">
-
-          <div>
-            ${money(person.fee)}
-          </div>
-
-          ${action}
-
-        </div>
-
-      `;
-
-
-      container.appendChild(row);
-
-    }
-  );
-
-}
-
-
-
-function sendIndividualReminder(
-  home,
-  owner
-){
-
-  alert(
-
-    "Demo de recordatorio\\n\\n"+
-    "Vivienda: "+home+"\\n"+
-    "Vecino: "+owner+"\\n\\n"+
-    "En la versión real, VecinIA enviaría un aviso al vecino."
-
-  );
-
-}
-
-
-
-function closePaymentsModal(){
-
-  document
-    .getElementById("paymentsModal")
-    .classList.remove("show");
-
-}
-/* =====================================================
-   RESUMEN
-   ===================================================== */
-
-
-function renderStats(){
-
-  const totalHomes=
-    data.homes.length;
-
-
-  const totalExpenses=
-    data.expenses.reduce(
-      (sum,e)=>
-        sum+Number(e.amount),
-      0
-    );
-
-
-  const paid=
-    data.homes
-      .filter(
-        h=>h.status==="paid"
-      )
-      .reduce(
-        (sum,h)=>
-          sum+Number(h.fee),
-        0
-      );
-
-
-  const pending=
-    data.homes
-      .filter(
-        h=>h.status==="pending"
-      )
-      .reduce(
-        (sum,h)=>
-          sum+Number(h.fee),
-        0
-      );
-
-
-  document
-    .getElementById("statHomes")
-    .textContent=
-      totalHomes;
-
-
-  document
-    .getElementById("statExpenses")
-    .textContent=
-      money(totalExpenses);
-
-
-  document
-    .getElementById("statPaid")
-    .textContent=
-      money(paid);
-
-
-  document
-    .getElementById("statPending")
-    .textContent=
-      money(pending);
-
-
-  const pendingCount=
-    data.homes.filter(
-      h=>h.status==="pending"
-    ).length;
-
-
-  const badge=
+  const descripcion =
     document.getElementById(
-      "pendingBadge"
-    );
+      "gastoDescripcion"
+    ).value.trim();
 
 
-  badge.textContent=
-    pendingCount+
-    (
-      pendingCount===1
-      ? " pendiente"
-      : " pendientes"
-    );
-
-}
-
-
-
-/* =====================================================
-   VIVIENDAS
-   ===================================================== */
-
-
-function renderHomes(){
-
-  const table=
-    document.getElementById(
-      "homesTable"
-    );
-
-
-  table.innerHTML="";
-
-
-  data.homes.forEach(
-    h=>{
-
-      table.innerHTML+=`
-
-        <tr>
-
-          <td>
-            <strong>
-              ${escapeHTML(h.home)}
-            </strong>
-          </td>
-
-          <td>
-            ${escapeHTML(h.owner)}
-          </td>
-
-          <td>
-            ${h.coef}%
-          </td>
-
-          <td>
-            ${money(h.fee)}
-          </td>
-
-          <td>
-
-            ${
-              h.status==="paid"
-
-              ?
-
-              '<span class="badge paid">Pagado</span>'
-
-              :
-
-              '<span class="badge pending">Pendiente</span>'
-
-            }
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-}
-
-
-
-/* =====================================================
-   GASTOS
-   ===================================================== */
-
-
-function renderExpenses(){
-
-  const table=
-    document.getElementById(
-      "expensesTable"
-    );
-
-
-  table.innerHTML="";
-
-
-  data.expenses.forEach(
-    (e,index)=>{
-
-      table.innerHTML+=`
-
-        <tr>
-
-          <td>
-            ${escapeHTML(e.name)}
-          </td>
-
-          <td>
-            ${escapeHTML(e.type)}
-          </td>
-
-          <td>
-            ${money(e.amount)}
-          </td>
-
-          <td>
-            <span class="badge info">
-              Por coeficiente
-            </span>
-          </td>
-
-          <td>
-
-            <button
-              class="btn btnDanger"
-              onclick="deleteExpense(${index})"
-            >
-              Eliminar
-            </button>
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-}
-
-
-
-function renderDashboardExpenses(){
-
-  const table=
-    document.getElementById(
-      "dashboardExpenses"
-    );
-
-
-  table.innerHTML="";
-
-
-  data.expenses
-    .slice(0,5)
-    .forEach(
-      e=>{
-
-        table.innerHTML+=`
-
-          <tr>
-
-            <td>
-              ${escapeHTML(e.name)}
-            </td>
-
-            <td>
-              ${escapeHTML(e.provider)}
-            </td>
-
-            <td>
-              Agosto 2026
-            </td>
-
-            <td>
-              <strong>
-                ${money(e.amount)}
-              </strong>
-            </td>
-
-            <td>
-              <span class="badge paid">
-                Confirmado
-              </span>
-            </td>
-
-          </tr>
-
-        `;
-
-      }
-    );
-
-}
-/* =====================================================
-   PAGOS
-   ===================================================== */
-
-
-function renderPayments(){
-
-  const table=
-    document.getElementById(
-      "paymentsTable"
-    );
-
-
-  table.innerHTML="";
-
-
-  data.homes.forEach(
-    (h,index)=>{
-
-      table.innerHTML+=`
-
-        <tr>
-
-          <td>
-            ${escapeHTML(h.home)}
-          </td>
-
-          <td>
-            ${escapeHTML(h.owner)}
-          </td>
-
-          <td>
-            ${money(h.fee)}
-          </td>
-
-          <td>
-
-            ${
-              h.status==="paid"
-
-              ?
-
-              '<span class="badge paid">Pagado</span>'
-
-              :
-
-              '<span class="badge pending">Pendiente</span>'
-
-            }
-
-          </td>
-
-          <td>
-
-            ${
-              h.status==="pending"
-
-              ?
-
-              `<button
-                class="btn btnGreen"
-                onclick="markPaid(${index})"
-              >
-                Marcar pagado
-              </button>`
-
-              :
-
-              `<button
-                class="btn btnLight"
-                onclick="markPending(${index})"
-              >
-                Marcar pendiente
-              </button>`
-
-            }
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-}
-
-
-
-/* =====================================================
-   CONTADORES
-   ===================================================== */
-
-
-function renderMeters(){
-
-  const table=
-    document.getElementById(
-      "metersTable"
-    );
-
-
-  table.innerHTML="";
-
-
-  data.meters.forEach(
-    m=>{
-
-      const consumption=
-        Number(m.current)-
-        Number(m.previous);
-
-
-      table.innerHTML+=`
-
-        <tr>
-
-          <td>
-            ${escapeHTML(m.home)}
-          </td>
-
-          <td>
-            ${escapeHTML(m.type)}
-          </td>
-
-          <td>
-            ${m.previous}
-          </td>
-
-          <td>
-            ${m.current}
-          </td>
-
-          <td>
-            <strong>
-              ${consumption} unidades
-            </strong>
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-  );
-
-}
-
-
-
-/* =====================================================
-   AÑADIR VIVIENDA
-   ===================================================== */
-
-
-function addHome(){
-
-  const home=
-    document
-      .getElementById("homeName")
-      .value
-      .trim();
-
-
-  const owner=
-    document
-      .getElementById("homeOwner")
-      .value
-      .trim();
-
-
-  const coef=
+  const importe =
     Number(
-      document
-        .getElementById("homeCoef")
-        .value
+      document.getElementById(
+        "gastoImporte"
+      ).value
     );
 
 
-  const fee=
-    Number(
-      document
-        .getElementById("homeFee")
-        .value
-    );
+  const fechaInput =
+    document.getElementById(
+      "gastoFecha"
+    ).value;
 
 
-  if(
-    !home ||
-    !owner ||
-    !coef ||
-    !fee
-  ){
+  if(!descripcion){
 
     alert(
-      "Completa todos los campos."
+      "Escribe una descripción."
     );
 
     return;
@@ -3432,501 +5126,257 @@ function addHome(){
   }
 
 
-  data.homes.push({
+  if(!importe || importe <= 0){
 
-    home,
-    owner,
-    coef,
-    fee,
-    status:"pending"
+    alert(
+      "Introduce un importe válido."
+    );
+
+    return;
+
+  }
+
+
+  let fecha =
+    fechaInput;
+
+
+  if(!fecha){
+
+    const ahora =
+      new Date();
+
+    fecha =
+      ahora.toLocaleDateString(
+        "es-ES"
+      );
+
+  }
+
+
+  datos.gastos.push({
+
+    id:
+      datos.siguienteId++,
+
+    tipo:
+      tipo,
+
+    descripcion:
+      descripcion,
+
+    importe:
+      importe,
+
+    fecha:
+      fecha
 
   });
 
 
-  saveData();
+  guardar();
 
+  cerrarModal();
 
-  closeModal(
-    "homeModal"
-  );
-
-
-  document
-    .getElementById("homeName")
-    .value="";
-
-
-  document
-    .getElementById("homeOwner")
-    .value="";
-
-
-  document
-    .getElementById("homeCoef")
-    .value="";
-
-
-  document
-    .getElementById("homeFee")
-    .value="";
-
-
-  renderAll();
+  renderizar();
 
 }
 
 
+function eliminarGasto(id){
 
-/* =====================================================
-   AÑADIR GASTO
-   ===================================================== */
-
-
-function addExpense(){
-
-  const name=
-    document
-      .getElementById("expenseName")
-      .value
-      .trim();
-
-
-  const type=
-    document
-      .getElementById("expenseType")
-      .value;
-
-
-  const amount=
-    Number(
-      document
-        .getElementById("expenseAmount")
-        .value
+  const gasto =
+    datos.gastos.find(
+      g => g.id === id
     );
 
 
-  const provider=
-    document
-      .getElementById("expenseProvider")
-      .value
-      .trim();
-
-
-  if(
-    !name ||
-    !amount
-  ){
-
-    alert(
-      "Introduce al menos el concepto y el importe."
-    );
-
+  if(!gasto){
     return;
-
   }
-  data.expenses.push({
-
-    name,
-    type,
-    amount,
-    provider:
-      provider ||
-      "Proveedor no indicado"
-
-  });
 
 
-  saveData();
-
-
-  closeModal(
-    "expenseModal"
-  );
-
-
-  document
-    .getElementById("expenseName")
-    .value="";
-
-
-  document
-    .getElementById("expenseAmount")
-    .value="";
-
-
-  document
-    .getElementById("expenseProvider")
-    .value="";
-
-
-  renderAll();
-
-}
-
-
-
-function deleteExpense(index){
-
-  if(
+  const confirmar =
     confirm(
-      "¿Eliminar este gasto de la demo?"
-    )
-  ){
-
-    data.expenses.splice(
-      index,
-      1
+      "¿Seguro que quieres eliminar este gasto?"
     );
 
 
-    saveData();
-
-    renderAll();
-
-  }
-
-}
-
-
-
-/* =====================================================
-   CAMBIAR ESTADO DE PAGO
-   ===================================================== */
-
-
-function markPaid(index){
-
-  data.homes[index].status=
-    "paid";
-
-
-  saveData();
-
-  renderAll();
-
-}
-
-
-
-function markPending(index){
-
-  data.homes[index].status=
-    "pending";
-
-
-  saveData();
-
-  renderAll();
-
-}
-
-
-
-function sendReminders(){
-
-  const pending=
-    data.homes.filter(
-      h=>h.status==="pending"
-    );
-
-
-  if(!pending.length){
-
-    alert(
-      "No hay pagos pendientes."
-    );
-
+  if(!confirmar){
     return;
+  }
+
+
+  datos.gastos =
+    datos.gastos.filter(
+      g => g.id !== id
+    );
+
+
+  guardar();
+
+  renderizar();
+
+}
+
+
+function guardarConfiguracion(){
+
+  const nombre =
+    document.getElementById(
+      "configNombre"
+    ).value.trim();
+
+
+  const direccion =
+    document.getElementById(
+      "configDireccion"
+    ).value.trim();
+
+
+  const mes =
+    document.getElementById(
+      "configMes"
+    ).value.trim();
+
+
+  const anterior =
+    Number(
+      document.getElementById(
+        "configAnterior"
+      ).value
+    );
+
+
+  if(nombre){
+
+    datos.comunidad.nombre =
+      nombre;
 
   }
+
+
+  if(direccion){
+
+    datos.comunidad.direccion =
+      direccion;
+
+  }
+
+
+  if(mes){
+
+    datos.comunidad.mes =
+      mes;
+
+  }
+
+
+  if(!Number.isNaN(anterior)){
+
+    datos.mesAnterior =
+      anterior;
+
+  }
+
+
+  guardar();
+
+  renderizar();
 
 
   alert(
-
-    "Demo: se enviarían recordatorios a "+
-    pending.length+
-    " viviendas con pagos pendientes."
-
+    "Configuración guardada correctamente."
   );
 
 }
 
 
+function borrarDatos(){
 
-/* =====================================================
-   CONTADORES
-   ===================================================== */
-
-
-function addMeter(){
-
-  const home=
-    document.getElementById(
-      "meterHome"
-    ).value;
-
-
-  const type=
-    document.getElementById(
-      "meterType"
-    ).value;
-
-
-  const previous=
-    Number(
-      document.getElementById(
-        "meterPrevious"
-      ).value
+  const confirmar =
+    confirm(
+      "¿Quieres restablecer todos los datos de la demo?"
     );
 
 
-  const current=
-    Number(
-      document.getElementById(
-        "meterCurrent"
-      ).value
-    );
-
-
-  if(
-    previous===0 ||
-    current===0
-  ){
-
-    alert(
-      "Introduce las dos lecturas."
-    );
-
+  if(!confirmar){
     return;
-
   }
 
 
-  if(
-    current<previous
-  ){
-
-    alert(
-      "La lectura actual no puede ser menor que la anterior."
-    );
-
-    return;
-
-  }
-
-
-  data.meters.push({
-
-    home,
-    type,
-    previous,
-    current
-
-  });
-
-
-  saveData();
-
-
-  closeModal(
-    "meterModal"
+  localStorage.removeItem(
+    STORAGE_KEY
   );
 
 
-  renderAll();
-
-}
-
-
-
-/* =====================================================
-   IA DE FACTURAS
-   ===================================================== */
-
-
-function analyzeInvoice(){
-
-  const file=
-    document
-      .getElementById(
-        "invoiceFile"
+  datos =
+    JSON.parse(
+      JSON.stringify(
+        datosIniciales
       )
-      .files[0];
-
-
-  if(!file){
-
-    alert(
-      "Primero selecciona una factura."
-    );
-
-    return;
-
-  }
-
-
-  const result=
-    document.getElementById(
-      "aiResult"
     );
 
 
-  result.style.display=
-    "block";
+  guardar();
 
-
-  result.scrollIntoView({
-
-    behavior:"smooth",
-
-    block:"center"
-
-  });
+  renderizar();
 
 }
 
 
+function abrirModal(){
 
-function confirmInvoice(){
-
-  const exists=
-    data.expenses.some(
-      e=>
-        e.name===
-        "Factura de electricidad"
-    );
-
-
-  if(!exists){
-
-    data.expenses.push({
-
-      name:
-        "Factura de electricidad",
-
-      type:
-        "Electricidad",
-
-      provider:
-        "IberLuz Servicios",
-
-      amount:
-        438.72
-
-    });
-
-
-    saveData();
-
-  }
-
-
-  alert(
-
-    "Factura confirmada en la demo. En la versión real, aquí se guardaría el documento y se incorporaría automáticamente al sistema."
-
+  document.getElementById(
+    "modal"
+  ).classList.add(
+    "show"
   );
 
+}
 
-  renderAll();
+
+function cerrarModal(){
+
+  document.getElementById(
+    "modal"
+  ).classList.remove(
+    "show"
+  );
 
 }
 
 
+document.getElementById(
+  "modal"
+).addEventListener(
 
-/* =====================================================
-   SEGURIDAD BÁSICA PARA TEXTO
-   ===================================================== */
+  "click",
 
+  function(event){
 
-function escapeHTML(value){
+    if(
+      event.target ===
+      this
+    ){
 
-  return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
-
-}
-
-
-
-/* =====================================================
-   RENDERIZADO
-   ===================================================== */
-
-
-function renderAll(){
-
-  renderStats();
-
-  renderHomes();
-
-  renderExpenses();
-
-  renderPayments();
-
-  renderMeters();
-
-  renderDashboardExpenses();
-
-}
-
-
-
-/* =====================================================
-   CARGAR DEMO
-   ===================================================== */
-
-
-loadData();
-
-renderAll();
-
-
-/* Cerrar ventana al pulsar fuera */
-
-document
-  .getElementById("paymentsModal")
-  .addEventListener(
-    "click",
-    function(e){
-
-      if(
-        e.target===
-        this
-      ){
-
-        closePaymentsModal();
-
-      }
+      cerrarModal();
 
     }
-  );
+
+  }
+
+);
+
+
+/* =========================================================
+   INICIAR APLICACIÓN
+========================================================= */
+
+renderizar();
 
 </script>
 
 </body>
-</html>
 
+</html>
